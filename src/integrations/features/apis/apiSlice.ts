@@ -82,6 +82,15 @@ export const moneyExchangeApi = createApi({
             }),
         }),
 
+        payee: builder.mutation({
+            query: data => ({
+                url: `/payee`,
+                headers: { "Authorization": `Token ${data.token}` },
+                method: "POST",
+                body: data.data,
+            }),
+        }),
+
         exchange: builder.mutation({
             query: data => ({
                 url: `/exchange`,

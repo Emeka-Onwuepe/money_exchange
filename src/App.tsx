@@ -74,17 +74,17 @@ return(
         <thead>
             <tr>
                 <th>Date</th>
-                <th>Name</th>
-                <th>Payee</th>
-                <th>USD Rate</th>
-                <th>USD Price</th>
-                <th>Naira Rate</th>
                 <th>Base</th>
                 <th>Amount</th>
-                <th>Naira</th>
-                <th>USD Bid</th>
+                <th>USD Price</th>
+                <th>USD Rate</th>
                 <th>USD Ask</th>
+                <th>USD Bid</th>
                 <th>USD Gain</th>
+                <th>Naira Rate</th>
+                <th>Naira</th>
+                <th>Name</th>
+                <th>Payee</th>
                 <th>Receipt</th>
             </tr>
         </thead>
@@ -92,18 +92,18 @@ return(
             {exchanges.map((exchange, index) => (
               exchange.amount ? (
                 <tr key={index}>
-                    <td>{exchange.date}</td>
-                    <td>{exchange.customer_name}</td>
-                    <td>{exchange.payee}</td>
-                    <td>{exchange.usd_rate}</td>
-                    <td>{exchange.usd_price}</td>
-                    <td>{exchange.naira_rate}</td>
+                    <td>{exchange.date}</td>  
                     <td>{exchange.base_currency}</td>
                     <td>{exchange.amount.toFixed(2)}</td>
-                    <td>{(exchange.amount * exchange.naira_rate).toFixed(1)}</td>
+                    <td>{exchange.usd_price}</td>
+                    <td>{exchange.usd_rate}</td>
                     <td>{(exchange.amount / exchange.usd_rate).toFixed(1)}</td>
                     <td>{(exchange.amount / exchange.usd_price).toFixed(1)}</td>
-                    <td>{((exchange.usd_price - exchange.usd_rate) * (exchange.amount / exchange.usd_rate)).toFixed(1)}</td>
+                    <td>{(((1/exchange.usd_price) - (1/exchange.usd_rate)) * exchange.amount).toFixed(1)}</td>
+                    <td>{exchange.naira_rate}</td>
+                    <td>{(exchange.amount * exchange.naira_rate).toFixed(1)}</td>
+                    <td>{exchange.customer_name}</td>
+                    <td>{exchange.payee}</td>
                     <td>{exchange.reciept}</td>
                 </tr>) : null
             ) )}
@@ -113,12 +113,6 @@ return(
   </div>
 
   <div>
-    <form>
-      <input type="text" placeholder='Full Name' required />
-      <input type="text" placeholder='Phone Number' required/>
-      <input type="email" placeholder='Email' />
-      <button type="submit">Add Customer</button>
-    </form>
   </div>
 
   <div>

@@ -12,8 +12,15 @@ import {writeToLocalStorage, readFromLocalStorage} from '../../localStorage';
 //       amount:0.0,
 //       payee:"",
 //       customer: '',
-//       customer_id: 0,
-//       customer_name: "",
+//       customer: 0,
+//       naira: 0,
+          // usd_bid:0,
+          // usd_ask:0,
+          // usd_gain:0,
+          // balance:0,
+          // transaction_id:'#ldldldldl',
+          // channel: 'transfer',
+          // paid_once: true,
 //       reciept:""
 //   }]}
 

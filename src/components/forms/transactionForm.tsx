@@ -5,6 +5,8 @@ export default function TransactionForm ({transactionFormState, setTransactionFo
 const user =  useAppSelector(state=>state.user)
 const customers =  useAppSelector(state=>state.customers.data)
 const dispatch = useAppDispatch();
+const currencies = ['RMB', 'USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'CHF', 'CNY', 'INR']
+
 
 const TransactionOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>{
   	setTransactionFormState({ ...transactionFormState, [e.target.name]: e.target.value })
@@ -30,9 +32,9 @@ const TransactionOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectE
        value={transactionFormState.base_currency} onChange={(e)=>TransactionOnChange}
       >
         <option value="" >Select Currency</option>
-        <option value="RMB">RMB</option>
-        <option value="EUR">EUR</option>
-        <option value="GBP">GBP</option>
+        {currencies.map((currency, index)=>(
+          <option key={index} value={currency}>{currency}</option>
+        ))}
       </select>
 
       <label htmlFor="usd_rate">USD Rate</label>

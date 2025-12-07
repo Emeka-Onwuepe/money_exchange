@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './styles/index.css'
 import App from './App.tsx'
+import Customers from './customers.tsx'
 import { Provider } from 'react-redux'
 import { store } from './integrations/store.ts'
 import Alert_System from './integrations/features/alert/Alert.tsx'
@@ -14,6 +15,8 @@ createRoot(document.getElementById('root')!).render(
     <Alert_System />
     <Routes>
       <Route path="/" element={<App />} />
+      <Route path="/customers" element={<Customers />} />
+      {/* <Route path="/" element={<App />} /> */}
     </Routes>
     </BrowserRouter>
     </Provider>

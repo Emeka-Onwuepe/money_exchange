@@ -1,6 +1,7 @@
 import { get_initial_user_data, loginUser } from './features/user/usersSlice';
 import { get_initial_customers_data, addCustomers } from './features/customer/customerSlice';
 import { get_initial_exchange_data, addExchange } from './features/exchange/exchangeSlice';
+import { addPayees, get_initial_payees_data } from './features/payee/payeeSlice';
 
 
 const initializeStore = async (store: any) => {
@@ -12,7 +13,10 @@ const initializeStore = async (store: any) => {
 
   const exchange = await get_initial_exchange_data()
   store.dispatch(addExchange({ data: exchange.data, save: false }));
-  
+
+  const payees = await get_initial_payees_data()
+  store.dispatch(addPayees({ data: payees.data, save: false }))
+
 };
 
 export default initializeStore;

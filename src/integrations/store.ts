@@ -6,6 +6,7 @@ import userslice from './features/user/usersSlice';
 import customersSlice  from './features/customer/customerSlice';
 import  exchangeSlice  from './features/exchange/exchangeSlice';
 import initializeStore from './initializeStore';
+import payeesSlice  from './features/payee/payeeSlice';
 
 
 export const store = configureStore({
@@ -14,6 +15,7 @@ export const store = configureStore({
     alert: alertSlice,
     customers: customersSlice,
     exchange: exchangeSlice,
+    payees: payeesSlice,
     [moneyExchangeApi.reducerPath] : moneyExchangeApi.reducer
   },
   middleware : getDefaultMiddleware =>
