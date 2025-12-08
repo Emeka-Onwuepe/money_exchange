@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 // Define a service using a base URL and expected endpoints
-// export const base_url = 'http://localhost:5000'
-export const base_url = "https://211c0d351888.ngrok-free.app"
+export const base_url = 'http://localhost:8000'
+// export const base_url = "https://211c0d351888.ngrok-free.app"
 export const baseUrl = `${base_url}/api`
+
 
 export const moneyExchangeApi = createApi({
   reducerPath: 'moneyExchangeApi',
@@ -76,18 +77,34 @@ export const moneyExchangeApi = createApi({
         customer: builder.mutation({
             query: data => ({
                 url: `/customer`,
-                headers: { "Authorization": `Token ${data.token}` },
+                // headers: { "Authorization": `Token ${data.token}` },
                 method: "POST",
                 body: data.data,
+            }),
+        }),
+
+        getCustomer: builder.query({
+            query: token => ({
+                url: `/customer`,
+                // headers: { "Authorization": `Token ${token}` },
+                method: "GET",
             }),
         }),
 
         payee: builder.mutation({
             query: data => ({
                 url: `/payee`,
-                headers: { "Authorization": `Token ${data.token}` },
+                // headers: { "Authorization": `Token ${data.token}` },
                 method: "POST",
                 body: data.data,
+            }),
+        }),
+
+        getPayee: builder.query({
+            query: token => ({
+                url: `/payee`,
+                // headers: { "Authorization": `Token ${token}` },
+                method: "GET",
             }),
         }),
 
@@ -107,5 +124,8 @@ export const {
     useLoginMutation, useRegisterUserMutation,
     useLogoutMutation, useOTPMutation,
     useCustomerMutation, useExchangeMutation,
-    useHandlePasswordMutation,
+    useHandlePasswordMutation, useGetCustomerQuery,
+    useGetPayeeQuery,
+    useLazyGetCustomerQuery,useLazyGetPayeeQuery,
+    usePayeeMutation
 } = moneyExchangeApi

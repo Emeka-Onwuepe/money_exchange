@@ -37,7 +37,13 @@ export const customersSlice = createSlice({
     },
 
     addSingleCustomer: (state, action) => {
-          state.data = [...state.data, action.payload]
+
+      const filtered = state.data.filter(customer=>customer.id != action.payload.id)
+      let data =  [...filtered, action.payload]
+      // sort by id in descending order
+      data.sort((a,b)=>b.id - a.id)
+      state.data = data
+
             writeToLocalStorage("customers", {data:state.data})
         },
 

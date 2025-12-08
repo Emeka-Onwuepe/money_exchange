@@ -5,7 +5,7 @@ import {writeToLocalStorage, readFromLocalStorage} from '../../localStorage';
 const initialData = {
   data: [{
       id: 0,
-      full_name: "",
+      name: "",
       phone_number: "",
       email: "",
   }]}
@@ -36,9 +36,14 @@ export const payeesSlice = createSlice({
         
     },
 
-    addSingleCustomer: (state, action) => {
-          state.data = [...state.data, action.payload]
-            writeToLocalStorage("payees", {data:state.data})
+    addSinglePayee: (state, action) => {
+
+      const filtered = state.data.filter(payee=>payee.id != action.payload.id)
+      let data =  [...filtered, action.payload]
+      // sort by id in descending order
+      data.sort((a,b)=>b.id - a.id)
+      state.data = data
+      writeToLocalStorage("payees", {data:state.data})
         },
 
     clearPayees :state=>{
@@ -50,6 +55,6 @@ export const payeesSlice = createSlice({
 
 });
 
-export const { addPayees, addSingleCustomer, clearPayees } = payeesSlice.actions;
+export const { addPayees, addSinglePayee, clearPayees } = payeesSlice.actions;
 
 export default payeesSlice.reducer;
