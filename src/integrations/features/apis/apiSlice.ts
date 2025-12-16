@@ -108,15 +108,46 @@ export const moneyExchangeApi = createApi({
             }),
         }),
 
+          getExchange: builder.query({
+            query: token => ({
+                url: `/exchange`,
+                // headers: { "Authorization": `Token ${token}` },
+                method: "GET",
+            }),
+        }),
+
         exchange: builder.mutation({
             query: data => ({
                 url: `/exchange`,
-                headers: { "Authorization": `Token ${data.token}` },
+                headers: {
+                    //  "Authorization": `Token ${data.token}`,
+                     "Content-Type": "multipart/form-data; boundary=---->",
+
+            
+            },
                 method: "POST",
                 body: data.data,
             }),
         }),
 
+        getPayments: builder.query({
+            query: data => ({
+                url: `/payment?transaction_id=${data.transaction_id}`,
+                // headers: { "Authorization": `Token ${data.token}` },
+                method: "GET",
+            }),
+        }),
+
+        payment: builder.mutation({
+            query: data => ({
+                url: `/payment`,
+                headers: {
+                    //  "Authorization": `Token ${data.token}`,            
+            },
+                method: "POST",
+                body: data.data,
+            }),
+        }),
   }),
 })
 
@@ -125,7 +156,8 @@ export const {
     useLogoutMutation, useOTPMutation,
     useCustomerMutation, useExchangeMutation,
     useHandlePasswordMutation, useGetCustomerQuery,
-    useGetPayeeQuery,
+    useGetPayeeQuery,useGetExchangeQuery,
     useLazyGetCustomerQuery,useLazyGetPayeeQuery,
-    usePayeeMutation
+    usePayeeMutation,
+    useGetPaymentsQuery,usePaymentMutation
 } = moneyExchangeApi

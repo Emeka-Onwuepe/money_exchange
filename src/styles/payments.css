@@ -1,0 +1,16 @@
+strong{
+    display:block
+}
+
+#transaction p{
+    width: 150px;
+    text-align: center;
+}
+
+#transaction {
+	/* width: 90%; */
+	border: 2px solid green;
+	margin: 0px auto;
+	justify-content: space-evenly;
+	flex-wrap: wrap;
+}

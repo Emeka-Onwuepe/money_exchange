@@ -2,6 +2,7 @@ import { get_initial_user_data, loginUser } from './features/user/usersSlice';
 import { get_initial_customers_data, addCustomers } from './features/customer/customerSlice';
 import { get_initial_exchange_data, addExchange } from './features/exchange/exchangeSlice';
 import { addPayees, get_initial_payees_data } from './features/payee/payeeSlice';
+import { addPayments, get_initial_payments_data } from './features/payment/paymentSlice';
 
 
 const initializeStore = async (store: any) => {
@@ -16,6 +17,9 @@ const initializeStore = async (store: any) => {
 
   const payees = await get_initial_payees_data()
   store.dispatch(addPayees({ data: payees.data, save: false }))
+
+   const payments = await get_initial_payments_data()
+  store.dispatch(addPayments({ data: payments.data, save: false }))
 
 };
 

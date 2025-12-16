@@ -3,6 +3,8 @@ import { useAppDispatch, useAppSelector } from "./integrations/hooks";
 import { useEffect, useState } from 'react';
 import { addExchange } from './integrations/features/exchange/exchangeSlice';
 import TransactionForm from './components/forms/transactionForm';
+import TransactionTable from './components/tables/transactions';
+import { useGetExchangeQuery } from './integrations/features/apis/apiSlice';
 
 
 
@@ -26,95 +28,55 @@ import TransactionForm from './components/forms/transactionForm';
 //     }
 
 
+interface transactionForm { id:string,base_currency: string, amount: number,
+                             usd_rate: number, usd_price: number, naira_rate: number, 
+                            paid_amount:number,channel:string, reciept: File|string,
+                             payee: string,customer:string }
+
+
 
 function App() {
 const user =  useAppSelector(state=>state.user)
 const customers =  useAppSelector(state=>state.customers.data)
-const exchanges = useAppSelector(state => state.exchange.data)
+const transactions = useAppSelector(state => state.exchange.data)
+const payees = useAppSelector(state => state.payees.data)
+
 const dispatch = useAppDispatch();
-
-const [transactionFormState, setTransactionFormState] = useState({base_currency: 'RMB', amount: 0.0,
-                             usd_rate: 16.8, usd_price: 17.0, naira_rate: 212.12, payee: '' })
-
-const [customerForm, setCustomerForm] = useState({full_name:'',phone_number:"",email:""})
+const { data: transactionData, error: transactionError, isLoading: transactionLoading } = useGetExchangeQuery(user.usertoken);
 
 
-const CustomerOnChange = (e: React.ChangeEvent<HTMLInputElement>) =>{
-  setCustomerForm({ ...customerForm, [e.target.name]: e.target.value })
-}
+const [transactionFormState, setTransactionFormState] = useState({ id:"",base_currency: 'RMB', amount: 0.0,
+                             usd_rate: 16.8, usd_price: 17.0, naira_rate: 212.12, 
+                            paid_amount:0.0,channel:'transfer', reciept: "",
+                             payee: '',customer:"" })
 
-const data = Array.from({ length: 10 }, (_, i) => ({
-      date: new Date(Date.now() - i * 86400000).toISOString().slice(0, 10), // recent dates
-      base_currency: ['RMB', 'USD', 'EUR'][i % 3],
-      usd_rate: +(6.5 + i * 0.1).toFixed(2),
-      usd_price: +(6.3 + i * 0.12).toFixed(2),
-      naira_rate: +(210 + i * 3),
-      amount: +(100 + i * 25).toFixed(2),
-      payee: `Payee ${i + 1}`,
-      customer: `CUST${1000 + i}`,
-      customer_id: i + 1,
-      customer_name: `Customer ${i + 1}`,
-      reciept: `REC-${(100000 + i).toString()}`
-    }))
+    const checkNull = (data: any) => {
+        const Data = { ...data };
+        for (const key in Data) {
+            if (!Data[key]) {
+                Data[key] = "";
+            }
+        }
+        return Data;
+    };
 
-    useEffect(() => {
-      dispatch(addExchange({ data: data, save: true }))
-    }, []);
-
-    useEffect(() => {
-      console.log(transactionFormState
-      )
-    },[transactionFormState])
-
+  useEffect(()=>{
+console.log(transactionFormState)
+  },[transactionFormState])
   
+   useEffect(() => {
+        if (transactionData && transactionData.transactions) {
+            dispatch(addExchange({ data: transactionData.transactions, save: true }));
+        }
+    }, [transactionData]);
+
 return(
   <>
   <div>
-    <table>
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Base</th>
-                <th>Amount</th>
-                <th>USD Price</th>
-                <th>USD Rate</th>
-                <th>USD Ask</th>
-                <th>USD Bid</th>
-                <th>USD Gain</th>
-                <th>Naira Rate</th>
-                <th>Naira</th>
-                <th>Name</th>
-                <th>Payee</th>
-                <th>Receipt</th>
-            </tr>
-        </thead>
-        <tbody>
-            {exchanges.map((exchange, index) => (
-              exchange.amount ? (
-                <tr key={index}>
-                    <td>{exchange.date}</td>  
-                    <td>{exchange.base_currency}</td>
-                    <td>{exchange.amount.toFixed(2)}</td>
-                    <td>{exchange.usd_price}</td>
-                    <td>{exchange.usd_rate}</td>
-                    <td>{(exchange.amount / exchange.usd_rate).toFixed(1)}</td>
-                    <td>{(exchange.amount / exchange.usd_price).toFixed(1)}</td>
-                    <td>{(((1/exchange.usd_price) - (1/exchange.usd_rate)) * exchange.amount).toFixed(1)}</td>
-                    <td>{exchange.naira_rate}</td>
-                    <td>{(exchange.amount * exchange.naira_rate).toFixed(1)}</td>
-                    <td>{exchange.customer_name}</td>
-                    <td>{exchange.payee}</td>
-                    <td>{exchange.reciept}</td>
-                </tr>) : null
-            ) )}
-        </tbody>
-        <tfoot></tfoot>
-    </table>
+    <TransactionTable setTransactionForm={setTransactionFormState} 
+    checkNull={checkNull} transactions={transactions}
+     customers={customers} payees={payees} />
   </div>
-
-  <div>
-  </div>
-
   <div>
     <TransactionForm transactionFormState={transactionFormState} setTransactionFormState={setTransactionFormState} /> 
   </div>
