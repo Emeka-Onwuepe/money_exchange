@@ -17,7 +17,7 @@ const PayeeTable =  ({ setPayeeForm, checkNull, payees }: {setPayeeForm:any,chec
 
         const [payeeSearch, setPayeeSearch] = useState("");
 
-       const pageSize = 1;
+       const pageSize = 20;
         const totalPages = Math.max(1, Math.ceil(payees.length / pageSize));
 
 

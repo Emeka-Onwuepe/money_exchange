@@ -1,8 +1,9 @@
 import { useParams } from "react-router"
 import { useAppSelector } from "./integrations/hooks"
 import "./styles/payments.css"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useGetPaymentsQuery } from "./integrations/features/apis/apiSlice"
+import PaymentForm from "./components/forms/paymentForm"
 
 
 
@@ -17,6 +18,12 @@ const user = useAppSelector(state=>state.user)
 const [transaction] = exchange.filter(trans=>trans.id == parseInt(id))
 const [customer] = customers.filter(c=>c.id==transaction.customer)
 const [payee] = customers.filter(p=>p.id==transaction.payee)
+const [payments, setPayments] = useState<{[key: string]: any}>([])
+
+const [paymentForm, setPaymentForm] = useState({ id: "", amount: "",
+                                                 transaction: parseInt(id) });
+
+const [paymentSum, setPaymentSum] = useState({ payments: 0, total: 0})
 
 
  const { data: paymentsData, error: paymentsError, isLoading: paymentsLoading } = useGetPaymentsQuery(
@@ -25,19 +32,32 @@ const [payee] = customers.filter(p=>p.id==transaction.payee)
 
 useEffect(()=>{
     if(paymentsData && paymentsData.payments){
-        console.log(paymentsData.payments)
+        setPayments(paymentsData.payments)   
     }
 
 },[paymentsData])
 
+useEffect(()=>{
+
+let sum = 0
+
+payments.forEach(data => {
+  sum += data.amount
+});
+ 
+setPaymentSum({payments:sum,total:sum+transaction.paid_amount})
+
+},[payments])
+
 
   return (
-    <>
-    <div>payments {param.transactionId}</div>
     <div>
-       <h3>Transaction</h3> 
-       <div className="flex_container" id="transaction">
+    <div className="sectionCard">
+       <h3 className="sectionTitle">Transaction</h3> 
+       <div  className="flex_container" id="transaction">
          <p><strong>Date:</strong><span>  {transaction.date}</span></p>
+           <p ><strong>Name:</strong><span>  {customer.full_name}</span></p>
+
                 <p ><strong>Base:</strong><span>  {transaction.base_currency}</span></p>
                 <p ><strong>Amount:</strong><span>  {transaction.amount}</span></p>
                 <p ><strong>USD Price:</strong><span>  {transaction.usd_price}</span></p>
@@ -48,12 +68,24 @@ useEffect(()=>{
                 <p ><strong>Naira Rate:</strong><span>  {transaction.naira_rate}</span></p>
                 <p ><strong>Naira:</strong><span>  {transaction.naira}</span></p>
                 <p ><strong>Paid Amount:</strong><span>  {transaction.paid_amount}</span></p>
-                <p ><strong>Balance:</strong><span>  {transaction.balance}</span></p>
-                <p ><strong>Name:</strong><span>  {customer.full_name}</span></p>
+                <p ><strong>Payments:</strong><span>  {paymentSum.payments}</span></p>
+                <p ><strong>Total Payments:</strong><span>  {paymentSum.total}</span></p>
+                <p ><strong>Balance:</strong><span>  {paymentSum.total - transaction.naira}</span></p>
                 <p ><strong>Payee:</strong><span>  {payee.full_name}</span></p>
-                <p ><strong>Receipt:</strong><span>  {transaction.reciept}</span></p>
+                <p ><strong>Receipt:</strong><span>  {transaction.reciept?<a target="blank" href={transaction.reciept}>View</a>: "no reciept"}</span></p>
        </div>
     </div>
-    </>
+    <div className="flex_container payment_flex">
+        <PaymentForm user = {user} setPayments={setPayments} paymentForm = {paymentForm} setpaymentForm = {setPaymentForm} transaction={parseInt(id)} />
+        {payments && (payments.map((payment: any, index: number) => (
+            <div key={index} className="payments">
+                <p>{payment.date}</p>
+                <p>{payment.amount}</p>
+                <button onClick={()=>setPaymentForm(payment)}>Edit</button>
+            </div>)
+            ))}
+
+    </div>
+    </div>
   )
 }

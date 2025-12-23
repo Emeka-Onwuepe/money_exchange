@@ -8,11 +8,11 @@ import { useEffect, useState, type ChangeEvent } from "react";
 
 
 
-const sendTransaction = async (formdata:any) => {
+const sendTransaction = async (formdata:any,token:string) => {
   return axios.post(`${baseUrl}/exchange`, formdata, {
       headers: {
         "Content-Type": "multipart/form-data",
-        // Authorization: `Token ${data.token}`,
+        // Authorization: `Token ${token}`,
       },
     })
     .then((res) => {
@@ -105,43 +105,25 @@ console.log('filedata',fileData)
   const OnSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
     e.preventDefault()
     if(transactionFormState.amount  == 0 || !transactionFormState.amount) return
+
+    let form = new FormData();
+    let formdData = transactionFormState
+
     if (transactionFormState.id == "") {
-      // Add new transaction
-        let { id, ...formdData } = transactionFormState;
-        // create form
-        let form = new FormData();
+        form.append('action','create')
+        let { id, ...formdData_ } = transactionFormState;
+        formdData = formdData_
+    }else{
+              form.append('action','update')
+    }
+
+    if(formdData.reciept == ""){
+      let {reciept,...rest} = formdData
+      formdData = rest
+    }
+
         for (const [key, value] of Object.entries(formdData)) {
-          if (value instanceof File || value instanceof Blob) {
-            form.append(key, value as Blob);
-          } else if (value === null || value === undefined) {
-            form.append(key, "");
-          } else {
-            form.append(key, String(value));
-          }
-        }
-
-
-        const data = { data: { data: form, action: "create" }, token: user.usertoken };
-        let res = await exchangeApi(data);
-
-
-        if (res.data) {
-          dispatch(addSingleExchange(res.data.payee));
-          setTransactionFormState({ id:"",base_currency: 'RMB', amount: 0.0,
-                             usd_rate: 17.0, usd_price: 16.8, naira_rate: 212.12,
-                              paid_amount:0.0,channel:'transfer', reciept:"",
-                              payee: '',customer:"" });
-
-              }
-        } else {
-
-            // create form
-        let form = new FormData();
-        for (const [key, value] of Object.entries(transactionFormState)) {
-          if (value instanceof File || value instanceof Blob) {
-            console.log('file value',value)
-            form.append(key, value as Blob);
-          } else if (value === null || value === undefined) {
+         if (value === null || value === undefined) {
             form.append(key, "");
           } else if (key == 'reciept'){
             form.append(key, fileData as Blob);
@@ -149,23 +131,17 @@ console.log('filedata',fileData)
           else {
             form.append(key, String(value));
           }
-        }
-
-        form.append('action','update')
         console.log(form)
         
-        const res = await sendTransaction(form)
-        console.log('res',res)
-          // const data = { data: { data: form, action: "update" }, token: user.usertoken };
-          // let res = await exchangeApi(data);
-          // if (res.data) {
-          //   dispatch(addSingleExchange(res.data.payee));
-          //   setTransactionFormState({ id:"",base_currency: 'RMB', amount: 0.0,
-          //                    usd_rate: 17.0, usd_price: 16.8, naira_rate: 212.12,
-          //                    paid_amount:0.0,channel:'transfer',
-          //                    payee: '',customer:"" ,reciept:""});
+        const res = await sendTransaction(form,user.usertoken)
+        if (res.data.transaction) {
+            dispatch(addSingleExchange(res.data.transaction));
+            setTransactionFormState({ id:"",base_currency: 'RMB', amount: 0.0,
+                             usd_rate: 17.0, usd_price: 16.8, naira_rate: 212.12,
+                             paid_amount:0.0,channel:'transfer',
+                             payee: '',customer:"" ,reciept:""});
 
-          //     }
+              }
           }
   }
 

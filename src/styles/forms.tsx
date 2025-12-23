@@ -80,6 +80,7 @@ const formStyles: { [k: string]: CSSProperties } = {
         padding: "8px 10px",
         borderRadius: 6,
         border: "1px solid #d8dee7",
+        width:'90%'
     },
     table: {
         width: "100%",

@@ -17,7 +17,7 @@ const CustomerTable =  ({ setCustomerForm, checkNull, customers }: {setCustomerF
 
         const [customerSearch, setCustomerSearch] = useState("");
 
-       const pageSize = 1;
+       const pageSize = 20;
         const totalPages = Math.max(1, Math.ceil(customers.length / pageSize));
 
 

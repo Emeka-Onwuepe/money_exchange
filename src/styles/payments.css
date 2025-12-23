@@ -1,5 +1,6 @@
 strong{
-    display:block
+    display:block;
+	color: blue;
 }
 
 #transaction p{
@@ -9,8 +10,22 @@ strong{
 
 #transaction {
 	/* width: 90%; */
-	border: 2px solid green;
 	margin: 0px auto;
 	justify-content: space-evenly;
 	flex-wrap: wrap;
+	background-color: white;
+	margin-bottom: 20px;
 }
+
+.payment_flex div{
+margin-bottom: 15px;
+}
+
+.payments {
+	background-color: white;
+	box-shadow: 5px 5px 5px rgb(209, 240, 209);
+	padding: 20px;
+	text-align: center;
+	border-radius: 20px;
+}
+

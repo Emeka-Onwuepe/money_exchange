@@ -20,7 +20,7 @@ export const moneyExchangeApi = createApi({
     }
   }),
   
-  tagTypes: ['userlogin'],
+  tagTypes: ['userlogin','addpayments'],
     endpoints: (builder) => ({
 
         login: builder.mutation({
@@ -109,11 +109,12 @@ export const moneyExchangeApi = createApi({
         }),
 
           getExchange: builder.query({
-            query: token => ({
-                url: `/exchange`,
-                // headers: { "Authorization": `Token ${token}` },
+            query: data => ({
+                url: `/exchange?${data.action}=${data.data}&action=${data.action}`,
+                // headers: { "Authorization": `Token ${data.token}` },
                 method: "GET",
             }),
+
         }),
 
         exchange: builder.mutation({
@@ -148,6 +149,17 @@ export const moneyExchangeApi = createApi({
                 body: data.data,
             }),
         }),
+
+        analytics: builder.mutation({
+            query: data => ({
+                url: `/analytics`,
+                headers: {
+                    //  "Authorization": `Token ${data.token}`,            
+            },
+                method: "POST",
+                body: data.data,
+            }),
+        }),
   }),
 })
 
@@ -158,6 +170,7 @@ export const {
     useHandlePasswordMutation, useGetCustomerQuery,
     useGetPayeeQuery,useGetExchangeQuery,
     useLazyGetCustomerQuery,useLazyGetPayeeQuery,
-    usePayeeMutation,
-    useGetPaymentsQuery,usePaymentMutation
+    usePayeeMutation, useLazyGetExchangeQuery,
+    useGetPaymentsQuery,usePaymentMutation,
+    useAnalyticsMutation
 } = moneyExchangeApi

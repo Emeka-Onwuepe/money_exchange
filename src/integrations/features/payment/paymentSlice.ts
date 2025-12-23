@@ -37,7 +37,6 @@ export const paymentsSlice = createSlice({
     },
 
     addSinglePayment: (state, action) => {
-
       const filtered = state.data.filter(payment=>payment.id != action.payload.id)
       let data =  [...filtered, action.payload]
       // sort by id in descending order

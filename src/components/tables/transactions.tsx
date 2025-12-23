@@ -1,6 +1,20 @@
-import { useState} from "react";
+import { useEffect, useState} from "react";
 import formStyles from "../../styles/forms";
 import { Link } from "react-router";
+import GetTransactionForm from "../forms/getTransactionForm";
+
+const styles = {
+    card:{  
+        // border: "1px solid #ccc",
+        borderRadius: 4,
+        padding: 16,
+        marginBottom: 16,
+        backgroundColor: "#fdfdfd",
+        boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+        width:"44%"
+
+    }
+}
 
 export interface transaction {
     // allow extra fields if needed by other parts of the app
@@ -10,13 +24,13 @@ export interface transaction {
 
 
 const TransactionTable =  ({ setTransactionForm, checkNull, 
-                            transactions, customers,payees }: 
+                            transactions, customers,payees,user }: 
     {setTransactionForm:any,checkNull:any,transactions:transaction[],
-     customers:transaction[],payees:transaction[]}) =>{
+     customers:transaction[],payees:transaction[],user:any}) =>{
 
     const [transactionSearch, settransactionSearch] = useState("");
 
-       const pageSize = 1;
+       const pageSize = 20;
         const totalPages = Math.max(1, Math.ceil(transactions.length / pageSize));
 
 
@@ -25,23 +39,39 @@ const TransactionTable =  ({ setTransactionForm, checkNull,
         const [transactionState, setTransactionState] = useState(transactions.slice(0,pageSize));
         const [pagination,setPaginated] = useState({totalPages,currentPage:1})
 
+useEffect(()=>{
+    console.log("Transactions updated:", transactions);
+    setTransactionState(transactions.slice(0,pageSize));
+    setPaginated({totalPages: Math.max(1, Math.ceil(transactions.length / pageSize)),
+         currentPage: 1});
 
-        
+},[transactions])
+
 const setEdit = (state:any) =>{
   const {reciept, ...rest} = state
   setTransactionForm({...rest,reciept:""})
 }
 
 
-         const searchTransaction = (e: React.ChangeEvent<HTMLInputElement>) => {
+const searchTransaction = (e: React.ChangeEvent<HTMLInputElement>) => {
                 let value = e.target.value;
                 settransactionSearch(value);
+                let customer = customers.filter(c=>c.full_name.toLowerCase().includes(value.toLowerCase()) )
+                let payee =  payees.filter(p=>p.name.toLowerCase().includes(value.toLowerCase()) )
+                console.log('payee',payee)
+                console.log('customer',customer)
+
+
+
                 let filtered = transactions.filter(
-                    (transaction) =>
-                        transaction.full_name.toLowerCase().includes(value.toLowerCase()) ||
-                        transaction.phone_number.toLowerCase().includes(value.toLowerCase()) ||
-                        transaction.email.toLowerCase().includes(value.toLowerCase())
+                    (transaction) => transaction.base_currency.toLowerCase().includes(value.toLowerCase()) ||
+                     customer.filter(c=>c.id == transaction.customer).length ||
+                     payee.filter(p=>p.id == transaction.payee).length
+
+
                 );
+
+
                 if(value == ""){
                     const currentPage = pagination.currentPage - 1
                     const start = currentPage * pageSize
@@ -80,9 +110,20 @@ const setEdit = (state:any) =>{
 
                     <div style={formStyles.sectionCard}>
                         <h3 style={formStyles.sectionTitle}>transactions</h3>
-                        <div style={formStyles.searchRow}>
-                            <label htmlFor="searchTransaction" style={{ width: 110, color: "#555" }}>Search</label>
-                            <input id="searchTransaction" style={formStyles.searchInput} type="text" name="searchTransaction" placeholder="Search by name, phone or email" value={transactionSearch} onChange={searchTransaction} />
+
+                        {/* <div style={formStyles.searchRow}> */}
+                        <div>
+                            {/* <p>Search Row</p> */}
+                            <div className="flex_container  ">
+                            <div className="" style={styles.card}>
+                                <GetTransactionForm customers={customers} payees={payees} user={user} />
+                            </div>
+                            <div className="" style={styles.card}>
+                            <label htmlFor="searchTransaction">Search</label>
+                            <input id="searchTransaction" style={formStyles.searchInput} 
+                            type="text" name="searchTransaction" placeholder="Search base, name or payee" value={transactionSearch} onChange={searchTransaction} />
+                            </div>
+                            </div>
                         </div>
 
                         <table style={formStyles.table}>

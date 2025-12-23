@@ -42,7 +42,9 @@ const transactions = useAppSelector(state => state.exchange.data)
 const payees = useAppSelector(state => state.payees.data)
 
 const dispatch = useAppDispatch();
-const { data: transactionData, error: transactionError, isLoading: transactionLoading } = useGetExchangeQuery(user.usertoken);
+const { data: transactionData, 
+  error: transactionError,
+   isLoading: transactionLoading } = useGetExchangeQuery({token:user.usertoken});
 
 
 const [transactionFormState, setTransactionFormState] = useState({ id:"",base_currency: 'RMB', amount: 0.0,
@@ -60,22 +62,22 @@ const [transactionFormState, setTransactionFormState] = useState({ id:"",base_cu
         return Data;
     };
 
-  useEffect(()=>{
-console.log(transactionFormState)
-  },[transactionFormState])
+  // useEffect(()=>{
+  // },[transactions])
   
    useEffect(() => {
         if (transactionData && transactionData.transactions) {
             dispatch(addExchange({ data: transactionData.transactions, save: true }));
         }
     }, [transactionData]);
+  
 
 return(
   <>
   <div>
     <TransactionTable setTransactionForm={setTransactionFormState} 
     checkNull={checkNull} transactions={transactions}
-     customers={customers} payees={payees} />
+     customers={customers} payees={payees} user={user} />
   </div>
   <div>
     <TransactionForm transactionFormState={transactionFormState} setTransactionFormState={setTransactionFormState} /> 
