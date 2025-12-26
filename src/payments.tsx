@@ -1,4 +1,4 @@
-import { useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
 import { useAppSelector } from "./integrations/hooks"
 import "./styles/payments.css"
 import { useEffect, useState } from "react"
@@ -19,7 +19,14 @@ const [transaction] = exchange.filter(trans=>trans.id == parseInt(id))
 const [customer] = customers.filter(c=>c.id==transaction.customer)
 const [payee] = customers.filter(p=>p.id==transaction.payee)
 const [payments, setPayments] = useState<{[key: string]: any}>([])
+const navigate = useNavigate()
 
+ useEffect(()=>{
+    if(!user.logedin || !user.verified){ 
+          navigate('/login')
+
+    }
+  },[user])
 const [paymentForm, setPaymentForm] = useState({ id: "", amount: "",
                                                  transaction: parseInt(id) });
 

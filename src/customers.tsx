@@ -13,6 +13,7 @@ import CustomerTable from "./components/tables/customers";
 import PayeeTable from "./components/tables/payees";
 import CustomerForm from "./components/forms/customerForm";
 import PayeeForm from "./components/forms/payeeForm";
+import { useNavigate } from "react-router";
 
 
 
@@ -21,7 +22,13 @@ const Customers = () => {
     const payees = useAppSelector((state) => state.payees.data);
     const user = useAppSelector((state) => state.user);
     const dispatch = useAppDispatch();
+    const navigate = useNavigate()
 
+    useEffect(()=>{
+    if(!user.logedin || !user.verified){ 
+            navigate('/login')
+    }
+  },[user])
 
     const { data: customersData, error: customersError, isLoading: customersLoading } = useGetCustomerQuery(
         user.usertoken

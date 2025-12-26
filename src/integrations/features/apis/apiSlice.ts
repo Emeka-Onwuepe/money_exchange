@@ -25,7 +25,7 @@ export const moneyExchangeApi = createApi({
 
         login: builder.mutation({
             query: data => ({
-                url: "user/login",
+                url: "/login",
                 method: "POST",
                 body: data
             }),
@@ -36,7 +36,7 @@ export const moneyExchangeApi = createApi({
 
         registerUser: builder.mutation({
             query: data => ({
-                url: "/user/signup",
+                url: "/register",
                 method: "POST",
                 body: data
             }),
@@ -45,39 +45,19 @@ export const moneyExchangeApi = createApi({
             invalidatesTags: ['userlogin']
         }),
 
-        handlePassword: builder.mutation({
-            query: data => ({
-                url: "/user/password",
-                // headers: { "Authorization": `Token ${data.token}`},
-                method: "POST",
-                body: data
-            }),
-        }),
-        
-
         logout: builder.mutation({
             query: token => ({
-                url: `/user/logout`,
-                // headers: { "Authorization": `Token ${token}` },
+                url: `/logout`,
+                headers: { "Authorization": `Token ${token}` },
                 method: "POST",
                 body: {usertoken:token}
-            }),
-        }),
-
-    
-        OTP: builder.mutation({
-            query: data => ({
-                url: `/user/otp`,
-                // headers: { "Authorization": `Token ${data.token}` },
-                method: "POST",
-                body: data,
             }),
         }),
 
         customer: builder.mutation({
             query: data => ({
                 url: `/customer`,
-                // headers: { "Authorization": `Token ${data.token}` },
+                headers: { "Authorization": `Token ${data.token}` },
                 method: "POST",
                 body: data.data,
             }),
@@ -86,7 +66,7 @@ export const moneyExchangeApi = createApi({
         getCustomer: builder.query({
             query: token => ({
                 url: `/customer`,
-                // headers: { "Authorization": `Token ${token}` },
+                headers: { "Authorization": `Token ${token}` },
                 method: "GET",
             }),
         }),
@@ -94,7 +74,7 @@ export const moneyExchangeApi = createApi({
         payee: builder.mutation({
             query: data => ({
                 url: `/payee`,
-                // headers: { "Authorization": `Token ${data.token}` },
+                headers: { "Authorization": `Token ${data.token}` },
                 method: "POST",
                 body: data.data,
             }),
@@ -103,7 +83,7 @@ export const moneyExchangeApi = createApi({
         getPayee: builder.query({
             query: token => ({
                 url: `/payee`,
-                // headers: { "Authorization": `Token ${token}` },
+                headers: { "Authorization": `Token ${token}` },
                 method: "GET",
             }),
         }),
@@ -111,7 +91,7 @@ export const moneyExchangeApi = createApi({
           getExchange: builder.query({
             query: data => ({
                 url: `/exchange?${data.action}=${data.data}&action=${data.action}`,
-                // headers: { "Authorization": `Token ${data.token}` },
+                headers: { "Authorization": `Token ${data.token}` },
                 method: "GET",
             }),
 
@@ -121,7 +101,7 @@ export const moneyExchangeApi = createApi({
             query: data => ({
                 url: `/exchange`,
                 headers: {
-                    //  "Authorization": `Token ${data.token}`,
+                     "Authorization": `Token ${data.token}`,
                      "Content-Type": "multipart/form-data; boundary=---->",
 
             
@@ -134,7 +114,7 @@ export const moneyExchangeApi = createApi({
         getPayments: builder.query({
             query: data => ({
                 url: `/payment?transaction_id=${data.transaction_id}`,
-                // headers: { "Authorization": `Token ${data.token}` },
+                headers: { "Authorization": `Token ${data.token}` },
                 method: "GET",
             }),
         }),
@@ -143,7 +123,7 @@ export const moneyExchangeApi = createApi({
             query: data => ({
                 url: `/payment`,
                 headers: {
-                    //  "Authorization": `Token ${data.token}`,            
+                     "Authorization": `Token ${data.token}`,            
             },
                 method: "POST",
                 body: data.data,
@@ -154,7 +134,7 @@ export const moneyExchangeApi = createApi({
             query: data => ({
                 url: `/analytics`,
                 headers: {
-                    //  "Authorization": `Token ${data.token}`,            
+                     "Authorization": `Token ${data.token}`,            
             },
                 method: "POST",
                 body: data.data,
@@ -165,9 +145,8 @@ export const moneyExchangeApi = createApi({
 
 export const {
     useLoginMutation, useRegisterUserMutation,
-    useLogoutMutation, useOTPMutation,
-    useCustomerMutation, useExchangeMutation,
-    useHandlePasswordMutation, useGetCustomerQuery,
+    useLogoutMutation,useCustomerMutation, 
+    useExchangeMutation,useGetCustomerQuery,
     useGetPayeeQuery,useGetExchangeQuery,
     useLazyGetCustomerQuery,useLazyGetPayeeQuery,
     usePayeeMutation, useLazyGetExchangeQuery,

@@ -10,21 +10,28 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import Payments from './payments.tsx'
 import Header from './components/header.tsx'
 import Analytics from './analytics.tsx'
+import SignUpForm from './components/forms/signUpForm.tsx'
+import LoginForm from './components/forms/loginForm.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
     <BrowserRouter>
     <Alert_System />
-    <Header/>
+        <Header/>
+
     <Routes>
+
+      <Route path="/signup" element={<SignUpForm />} />
+      <Route path="/login" element={<LoginForm />} />
+
       <Route path="/" element={<App />} />
       <Route path="/customers" element={<Customers />} />
       <Route path="/analytics" element={<Analytics />} />
       <Route path="/payments/:transactionId" element={<Payments />} />
-
       {/* <Route path="/" element={<App />} /> */}
     </Routes>
+
     </BrowserRouter>
     </Provider>
   </StrictMode>,

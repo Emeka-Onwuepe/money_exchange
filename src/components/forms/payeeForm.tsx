@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { useCustomerMutation, usePayeeMutation } from "../../integrations/features/apis/apiSlice";
-import { addSingleCustomer } from "../../integrations/features/customer/customerSlice";
+import { usePayeeMutation } from "../../integrations/features/apis/apiSlice";
 import { useAppDispatch } from "../../integrations/hooks";
 import formStyles from "../../styles/forms";
 import { addSinglePayee } from "../../integrations/features/payee/payeeSlice";

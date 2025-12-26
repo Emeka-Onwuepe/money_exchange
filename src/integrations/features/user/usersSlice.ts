@@ -8,8 +8,7 @@ const initialData = {
   email: "",
   user_type: "",
   phone_number: "",
-  verified_phone_number: false, 
-  verified_email: false, 
+  verified: false, 
   usertoken: "",
   logedin: false,
 }

@@ -5,6 +5,7 @@ import { addExchange } from './integrations/features/exchange/exchangeSlice';
 import TransactionForm from './components/forms/transactionForm';
 import TransactionTable from './components/tables/transactions';
 import { useGetExchangeQuery } from './integrations/features/apis/apiSlice';
+import { useNavigate } from 'react-router';
 
 
 
@@ -36,6 +37,9 @@ interface transactionForm { id:string,base_currency: string, amount: number,
 
 
 function App() {
+
+
+const navigate = useNavigate()
 const user =  useAppSelector(state=>state.user)
 const customers =  useAppSelector(state=>state.customers.data)
 const transactions = useAppSelector(state => state.exchange.data)
@@ -62,8 +66,12 @@ const [transactionFormState, setTransactionFormState] = useState({ id:"",base_cu
         return Data;
     };
 
-  // useEffect(()=>{
-  // },[transactions])
+  useEffect(()=>{
+    if(!user.logedin || !user.verified){ 
+          navigate('/login')
+
+    }
+  },[user])
   
    useEffect(() => {
         if (transactionData && transactionData.transactions) {
