@@ -1,3 +1,4 @@
+import { addAlert } from "../../integrations/features/alert/alertSlice";
 import { useCustomerMutation } from "../../integrations/features/apis/apiSlice";
 import { addSingleCustomer } from "../../integrations/features/customer/customerSlice";
 import { useAppDispatch } from "../../integrations/hooks";
@@ -23,14 +24,18 @@ const CustomerForm = ({user,customerForm, setCustomerForm}:any) =>{
                 if (res.data) {
                     dispatch(addSingleCustomer(res.data.customer));
                     setCustomerForm({ id: "", full_name: "", phone_number: "", email: "" });
-                }
+                }else if (res.error) {
+                    dispatch(addAlert({...res.error, page:'customerForm'}))
+                                }; 
             } else {
                 const data = { data: { data: customerForm, action: "update" }, token: user.usertoken };
                 let res = await customerApi(data);
                 if (res.data) {
                     dispatch(addSingleCustomer(res.data.customer));
                     setCustomerForm({ id: "", full_name: "", phone_number: "", email: "" });
-                }
+                }else if (res.error) {
+                    dispatch(addAlert({...res.error, page:'customerForm'}))
+                            }; 
             }
         };
     

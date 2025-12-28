@@ -3,6 +3,7 @@ import { usePayeeMutation } from "../../integrations/features/apis/apiSlice";
 import { useAppDispatch } from "../../integrations/hooks";
 import formStyles from "../../styles/forms";
 import { addSinglePayee } from "../../integrations/features/payee/payeeSlice";
+import { addAlert } from "../../integrations/features/alert/alertSlice";
 
 
 const PayeeForm = ({user,payeeForm, setPayeeForm}:any) =>{
@@ -24,14 +25,18 @@ const PayeeForm = ({user,payeeForm, setPayeeForm}:any) =>{
                     if (res.data) {
                         dispatch(addSinglePayee(res.data.payee));
                         setPayeeForm({ id: "", name: "", phone_number: "", email: "" });
-                    }
+                    }else if(res.error){
+                        dispatch(addAlert({...res.error, page:'payeeForm'}))
+                                   }
                 } else {
                     const data = { data: { data: payeeForm, action: "update" }, token: user.usertoken };
                     let res = await payeeApi(data);
                     if (res.data) {
                         dispatch(addSinglePayee(res.data.payee));
                         setPayeeForm({ id: "", name: "", phone_number: "", email: "" });
-                    }
+                    }else if(res.error){
+                        dispatch(addAlert({...res.error, page:'payeeForm'}))
+               }
                 }
             };
 

@@ -1,7 +1,12 @@
+import { addAlert } from "../../integrations/features/alert/alertSlice";
 import { usePaymentMutation } from "../../integrations/features/apis/apiSlice";
 import { addSinglePayment } from "../../integrations/features/payment/paymentSlice";
 import { useAppDispatch } from "../../integrations/hooks";
 import formStyles from "../../styles/forms";
+
+interface PayeeInterface {
+    [key:string]:string
+}[]
 
 
 const PaymentForm = ({user,paymentForm, setPayments, setpaymentForm,transaction}:any) =>{
@@ -22,17 +27,17 @@ const PaymentForm = ({user,paymentForm, setPayments, setpaymentForm,transaction}
                 let res = await paymentApi(data);
                 if (res.data) {
                     // dispatch(addSinglePayment(res.data.payment));
-                    setPayments(prev=>{return[res.data.payment,...prev]})
+                    setPayments((prev: any)=>{return[res.data.payment,...prev]})
                     setpaymentForm({ id: "", amount: "", transaction});
                 }
             } else {
                 const data = { data: { data: paymentForm, action: "update" }, token: user.usertoken };
                 let res = await paymentApi(data);
                 if (res.data) {
-                    setPayments(prev=>{
+                    setPayments((prev: any)=>{
                         const new_data = res.data.payment
-                        const new_state= []
-                        prev.forEach(item => {
+                        const new_state: PayeeInterface[]= []
+                        prev.forEach((item: any) => {
                             if(item.id != new_data.id){
                                 new_state.push(item)
                             }else{
@@ -46,7 +51,9 @@ const PaymentForm = ({user,paymentForm, setPayments, setpaymentForm,transaction}
                     // dispatch(addSinglePayment(res.data.payment));
 
                     setpaymentForm({ id: "", amount: "", transaction});
-                }
+                }else if(res.error){
+                    dispatch(addAlert({...res.error, page:'PaymentForm'}))
+                               }
             }
         };
     

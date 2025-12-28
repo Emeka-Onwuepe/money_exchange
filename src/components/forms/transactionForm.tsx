@@ -5,6 +5,7 @@ import { addSingleExchange } from "../../integrations/features/exchange/exchange
 import { baseUrl, useExchangeMutation } from "../../integrations/features/apis/apiSlice";
 import axios from "axios";
 import { useEffect, useState, type ChangeEvent } from "react";
+import { addAlert } from "../../integrations/features/alert/alertSlice";
 
 
 
@@ -131,7 +132,6 @@ console.log('filedata',fileData)
           else {
             form.append(key, String(value));
           }
-        console.log(form)
         
         const res = await sendTransaction(form,user.usertoken)
         if (res.data.transaction) {
@@ -141,7 +141,10 @@ console.log('filedata',fileData)
                              paid_amount:0.0,channel:'transfer',
                              payee: '',customer:"" ,reciept:""});
 
-              }
+              }else if(res.success == false){
+                              dispatch(addAlert({...res.data, page:'getStatementForm'}))
+                             }
+
           }
   }
 

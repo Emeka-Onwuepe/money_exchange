@@ -23,9 +23,19 @@ const Alert_System = () => {
         for (const message of alert.message) {
           if (alert.status_code === 200) {
             
-            toast.success(message)
+            toast.success(message,{
+              position: 'top-center',
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+            })
           } else {
-            toast.error(message)
+            toast.error(message,{
+              position: 'top-center',
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+            })
           }
             
         }

@@ -3,6 +3,7 @@ import Select from "react-select"
 import { useLazyGetExchangeQuery } from "../../integrations/features/apis/apiSlice"
 import { addExchange } from "../../integrations/features/exchange/exchangeSlice"
 import { useAppDispatch } from "../../integrations/hooks"
+import { addAlert } from "../../integrations/features/alert/alertSlice"
 
 const styles = {
     date: {display: "block",
@@ -42,12 +43,18 @@ export default function GetTransactionForm({customers,payees,user}:
   {customers: any[], payees: any[] , user:any}) {
 
 const dispatch = useAppDispatch();
-const [getExchange, { data: transactionData, error: transactionError, isLoading: transactionLoading }] = useLazyGetExchangeQuery()
+const [getExchange, { data: transactionData, error: transactionError, 
+  isLoading: transactionLoading }] = useLazyGetExchangeQuery()
 
 useEffect(() => {
   if (transactionData && transactionData.transactions) {
       dispatch(addExchange({ data: transactionData.transactions, save: true }));
   } 
+
+  if (transactionError) {
+      dispatch(addAlert({ ...transactionError, page: 'getTransactionForm' }))
+  }
+
 }, [transactionData]);
 
 const reset = () =>{

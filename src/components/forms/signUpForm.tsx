@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { useRegisterUserMutation } from "../../integrations/features/apis/apiSlice";
 import { useAppDispatch, useAppSelector } from "../../integrations/hooks";
 import formStyles from "../../styles/forms";
-import { loginUser } from "../../integrations/features/user/usersSlice";
+import { loginUser, logoutUser } from "../../integrations/features/user/usersSlice";
 import { useNavigate } from "react-router";
+import { addAlert } from "../../integrations/features/alert/alertSlice";
 
 const style = {
     container: {
@@ -59,6 +60,12 @@ const SignUpForm = () =>{
             if(user.logedin && user.verified){ 
                  navigate('/')
 
+            }else if(user.logedin && !user.verified){
+                dispatch(addAlert({status:401, page:'signup',
+                    data:{message:"Please verify your account"}}))
+                    // dispatch(logoutUser());
+                    // navigate('/login')
+
             }
           },[user])
 
@@ -79,7 +86,10 @@ const SignUpForm = () =>{
                             usertoken: res.data.token , logedin:true,save:true}));
                         setuserForm({ full_name: "", phone_number: "", email: "",
                             password:"",confirm_password:"" });
-                    }
+                    }else if (res.error) {
+                        dispatch(addAlert({...res.error, page:'signup'}))
+                };       
+
                 };       
 
     return(

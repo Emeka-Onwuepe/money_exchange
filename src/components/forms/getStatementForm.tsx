@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import formStyles from "../../styles/forms";
 import { useAnalyticsMutation } from "../../integrations/features/apis/apiSlice";
+import { addAlert } from "../../integrations/features/alert/alertSlice";
+import { useAppDispatch } from "../../integrations/hooks";
 
 
 export default function GetStatementForm({user,setSource}:{user:any,setSource:any}) {
 
     
     const [analyticsApi, { isLoading}] = useAnalyticsMutation();
+    const dispatch = useAppDispatch();
     
 
     const [formState, setFormState] = useState({start:new Date().toLocaleDateString(),
@@ -22,8 +25,11 @@ export default function GetStatementForm({user,setSource}:{user:any,setSource:an
         analyticsApi(data).then(res=>{
             if(res.data && res.data.analysis){
                 setSource(res.data.analysis)
+               }else if(res.error){
+                dispatch(addAlert({...res.error, page:'getStatementForm'}))
                }
-            }).catch(err=>console.log(err))
+            
+            }).catch(err=>console.log('login error',err))
         
     },[])
 
@@ -36,17 +42,17 @@ export default function GetStatementForm({user,setSource}:{user:any,setSource:an
             const data = {data:{data:formState,action},token:user.usertoken}
 
             const res = await analyticsApi(data)
-           console.log(res.data)
            if(res.data && res.data.statement_url){
             const link = document.createElement('a');
             link.href = res.data.statement_url;
-            // link.download = 'statement.pdf';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
            }else if(res.data && res.data.analysis){
             setSource(res.data.analysis)
-           }
+           }else if(res.error){
+                dispatch(addAlert({...res.error, page:'getStatementForm'}))
+               }
     
         }
 
