@@ -7,140 +7,141 @@ export const baseUrl = `${base_url}/api`
 
 
 export const moneyExchangeApi = createApi({
-  reducerPath: 'moneyExchangeApi',
-  baseQuery: fetchBaseQuery({ baseUrl,
-      prepareHeaders(headers) {
-          if (!headers.get("Content-Type")) {
-            headers.set("Content-Type", "application/json")
+    reducerPath: 'moneyExchangeApi',
+    baseQuery: fetchBaseQuery({ baseUrl,
+            prepareHeaders(headers) {
+                    if (!headers.get("Content-Type")) {
+                        headers.set("Content-Type", "application/json")
+                }
+                // headers.set("x-vercel-protection-bypass", "N4v38tw1rJLlXWA82X4JEFwfitPtOHcW")
+
+                
+                return headers
         }
-        // headers.set("x-vercel-protection-bypass", "N4v38tw1rJLlXWA82X4JEFwfitPtOHcW")
+    }),
+    
+    tagTypes: ['userlogin','addpayments', 'exchange'],
+        endpoints: (builder) => ({
 
-        
-        return headers
-    }
-  }),
-  
-  tagTypes: ['userlogin','addpayments'],
-    endpoints: (builder) => ({
+                login: builder.mutation({
+                        query: data => ({
+                                url: "/login",
+                                method: "POST",
+                                body: data
+                        }),
+                        // transformResponse : (response,meta,arg) => response.data,
+                        // transformErrorResponse : response => response.status,
+                        invalidatesTags: ['userlogin']
+                }),
 
-        login: builder.mutation({
-            query: data => ({
-                url: "/login",
-                method: "POST",
-                body: data
-            }),
-            // transformResponse : (response,meta,arg) => response.data,
-            // transformErrorResponse : response => response.status,
-            invalidatesTags: ['userlogin']
-        }),
+                registerUser: builder.mutation({
+                        query: data => ({
+                                url: "/register",
+                                method: "POST",
+                                body: data
+                        }),
+                        // transformResponse : (response,meta,arg) => response.data,
+                        // transformErrorResponse : response => response.status,
+                        invalidatesTags: ['userlogin']
+                }),
 
-        registerUser: builder.mutation({
-            query: data => ({
-                url: "/register",
-                method: "POST",
-                body: data
-            }),
-            // transformResponse : (response,meta,arg) => response.data,
-            // transformErrorResponse : response => response.status,
-            invalidatesTags: ['userlogin']
-        }),
+                logout: builder.mutation({
+                        query: token => ({
+                                url: `/logout`,
+                                headers: { "Authorization": `Token ${token}` },
+                                method: "POST",
+                                body: {usertoken:token}
+                        }),
+                }),
 
-        logout: builder.mutation({
-            query: token => ({
-                url: `/logout`,
-                headers: { "Authorization": `Token ${token}` },
-                method: "POST",
-                body: {usertoken:token}
-            }),
-        }),
+                customer: builder.mutation({
+                        query: data => ({
+                                url: `/customer`,
+                                headers: { "Authorization": `Token ${data.token}` },
+                                method: "POST",
+                                body: data.data,
+                        }),
+                }),
 
-        customer: builder.mutation({
-            query: data => ({
-                url: `/customer`,
-                headers: { "Authorization": `Token ${data.token}` },
-                method: "POST",
-                body: data.data,
-            }),
-        }),
+                getCustomer: builder.query({
+                        query: token => ({
+                                url: `/customer`,
+                                headers: { "Authorization": `Token ${token}` },
+                                method: "GET",
+                        }),
+                }),
 
-        getCustomer: builder.query({
-            query: token => ({
-                url: `/customer`,
-                headers: { "Authorization": `Token ${token}` },
-                method: "GET",
-            }),
-        }),
+                payee: builder.mutation({
+                        query: data => ({
+                                url: `/payee`,
+                                headers: { "Authorization": `Token ${data.token}` },
+                                method: "POST",
+                                body: data.data,
+                        }),
+                }),
 
-        payee: builder.mutation({
-            query: data => ({
-                url: `/payee`,
-                headers: { "Authorization": `Token ${data.token}` },
-                method: "POST",
-                body: data.data,
-            }),
-        }),
+                getPayee: builder.query({
+                        query: token => ({
+                                url: `/payee`,
+                                headers: { "Authorization": `Token ${token}` },
+                                method: "GET",
+                        }),
+                }),
 
-        getPayee: builder.query({
-            query: token => ({
-                url: `/payee`,
-                headers: { "Authorization": `Token ${token}` },
-                method: "GET",
-            }),
-        }),
+                getExchange: builder.query({
+                        query: data => ({
+                                url: `/exchange?${data.action}=${data.data}&action=${data.action}`,
+                                headers: { "Authorization": `Token ${data.token}` },
+                                method: "GET",
+                        }),
+                        providesTags: ['exchange']
+                }),
 
-          getExchange: builder.query({
-            query: data => ({
-                url: `/exchange?${data.action}=${data.data}&action=${data.action}`,
-                headers: { "Authorization": `Token ${data.token}` },
-                method: "GET",
-            }),
+                exchange: builder.mutation({
+                        query: data => ({
+                                url: `/exchange`,
+                                headers: {
+                                         "Authorization": `Token ${data.token}`,
+                                         "Content-Type": "multipart/form-data; boundary=---->",
 
-        }),
+                        
+                        },
+                                method: "POST",
+                                body: data.data,
+                        }),
+                }),
 
-        exchange: builder.mutation({
-            query: data => ({
-                url: `/exchange`,
-                headers: {
-                     "Authorization": `Token ${data.token}`,
-                     "Content-Type": "multipart/form-data; boundary=---->",
+                getPayments: builder.query({
+                        query: data => ({
+                                url: `/payment?transaction_id=${data.transaction_id}`,
+                                headers: { "Authorization": `Token ${data.token}` },
+                                method: "GET",
+                        }),
+                }),
 
-            
-            },
-                method: "POST",
-                body: data.data,
-            }),
-        }),
+                payment: builder.mutation({
+                        query: data => ({
+                                url: `/payment`,
+                                headers: {
+                                         "Authorization": `Token ${data.token}`,            
+                        },
+                                method: "POST",
+                                body: data.data,
+                        }),
+                        invalidatesTags: ['exchange']
+                }),
 
-        getPayments: builder.query({
-            query: data => ({
-                url: `/payment?transaction_id=${data.transaction_id}`,
-                headers: { "Authorization": `Token ${data.token}` },
-                method: "GET",
-            }),
-        }),
-
-        payment: builder.mutation({
-            query: data => ({
-                url: `/payment`,
-                headers: {
-                     "Authorization": `Token ${data.token}`,            
-            },
-                method: "POST",
-                body: data.data,
-            }),
-        }),
-
-        analytics: builder.mutation({
-            query: data => ({
-                url: `/analytics`,
-                headers: {
-                     "Authorization": `Token ${data.token}`,            
-            },
-                method: "POST",
-                body: data.data,
-            }),
-        }),
-  }),
+                analytics: builder.mutation({
+                        query: data => ({
+                                url: `/analytics`,
+                                headers: {
+                                         "Authorization": `Token ${data.token}`,            
+                        },
+                                method: "POST",
+                                body: data.data,
+                        }),
+                }),
+    }),
 })
 
 export const {

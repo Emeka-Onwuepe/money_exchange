@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import formStyles from "../../styles/forms";
 import { useAnalyticsMutation } from "../../integrations/features/apis/apiSlice";
 
 
-export default function GetStatementForm({user}:{user:any}) {
+export default function GetStatementForm({user,setSource}:{user:any,setSource:any}) {
 
     
     const [analyticsApi, { isLoading}] = useAnalyticsMutation();
@@ -16,24 +16,45 @@ export default function GetStatementForm({user}:{user:any}) {
         setFormState({ ...formState, [e.target.name]: e.target.value });
             };
     
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+
+    useEffect(()=>{
+         const data = {data:{data:formState,action:"get_today_statement"},token:user.usertoken}
+        analyticsApi(data).then(res=>{
+            if(res.data && res.data.analysis){
+                setSource(res.data.analysis)
+               }
+            }).catch(err=>console.log(err))
+        
+    },[])
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>,action:string) => {
             e.preventDefault();
-            console.log(formState)
-            const data = {data:{data:formState,action:'get_statement'},token:user.usertoken}
+            if(isLoading) return;
+            if(!user.usertoken) return;
+            if(!formState.start || !formState.end) return;
+
+            const data = {data:{data:formState,action},token:user.usertoken}
 
             const res = await analyticsApi(data)
-            if(res.data && res.data.analysis){
-                console.log(res.data.analysis)
-            }
-
-        
+           console.log(res.data)
+           if(res.data && res.data.statement_url){
+            const link = document.createElement('a');
+            link.href = res.data.statement_url;
+            // link.download = 'statement.pdf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+           }else if(res.data && res.data.analysis){
+            setSource(res.data.analysis)
+           }
+    
         }
 
 
   return (
     <div style={formStyles.formsColumn}>
                     <h3 style={formStyles.formTitle}>Get Statements</h3>
-                    <form onSubmit={handleSubmit} style={formStyles.form}>
+                    <form onSubmit={(e) => handleSubmit(e, 'get_statement')} style={formStyles.form}>
                         <input style={formStyles.input} type="date" 
                         name="start" required value={formState.start} onChange={onChange} />
                         <input style={formStyles.input} type="date" 
@@ -41,7 +62,7 @@ export default function GetStatementForm({user}:{user:any}) {
                         
                         <button style={formStyles.submitBtn} type="submit">Get</button>
                     </form>
-                        <button style={formStyles.submitBtn} type="submit">Download</button>
+                        <button  onClick={(e) => handleSubmit(e, 'download_statement')} style={formStyles.submitBtn} type="submit">Download</button>
                 </div>
   )
 }

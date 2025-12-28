@@ -12,7 +12,7 @@ const sendTransaction = async (formdata:any,token:string) => {
   return axios.post(`${baseUrl}/exchange`, formdata, {
       headers: {
         "Content-Type": "multipart/form-data",
-        // Authorization: `Token ${token}`,
+        Authorization: `Token ${token}`,
       },
     })
     .then((res) => {
