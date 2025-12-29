@@ -5,6 +5,7 @@ import formStyles from "../../styles/forms";
 import { loginUser, logoutUser } from "../../integrations/features/user/usersSlice";
 import { useNavigate } from "react-router";
 import { addAlert } from "../../integrations/features/alert/alertSlice";
+import { setLoading } from "../../integrations/features/meta/metaSlice";
 
 const style = {
     container: {
@@ -18,6 +19,7 @@ const style = {
         padding: '10px',
         borderRadius: '5px',
         backgroundColor: '#f2f2f2',
+        marginTop: '50px',
     },
     form: {
         display: 'flex',
@@ -53,8 +55,13 @@ const SignUpForm = () =>{
         const navigate = useNavigate()
         const user = useAppSelector(state=>state.user)
 
-        const [userApi, { isLoading: pLoading }] = useRegisterUserMutation();
+        const [userApi, { isLoading }] = useRegisterUserMutation();
         const dispatch = useAppDispatch();
+
+           useEffect(()=>{
+             dispatch(setLoading(isLoading))
+            },[isLoading])
+                
 
          useEffect(()=>{
             if(user.logedin && user.verified){ 
@@ -150,7 +157,10 @@ const SignUpForm = () =>{
                             </p>
                         )}
                         <button 
-                            style={formStyles.submitBtn} 
+                        style={{ ...formStyles.submitBtn, 
+                                 ...(isLoading ? { backgroundColor: '#808080', cursor: 'not-allowed' } 
+                                : {backgroundColor: "#0b5fff", cursor: 'pointer'}) }} 
+
                             type="submit"
                             disabled={userForm.password !== userForm.confirm_password}
                         >

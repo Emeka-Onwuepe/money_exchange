@@ -12,6 +12,7 @@ import Header from './components/header.tsx'
 import Analytics from './analytics.tsx'
 import SignUpForm from './components/forms/signUpForm.tsx'
 import LoginForm from './components/forms/loginForm.tsx'
+import Loading from './components/loading.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -19,6 +20,7 @@ createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
     <Alert_System />
         <Header/>
+        <Loading/>
 
     <Routes>
 

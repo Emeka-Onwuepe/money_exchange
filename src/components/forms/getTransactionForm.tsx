@@ -4,6 +4,8 @@ import { useLazyGetExchangeQuery } from "../../integrations/features/apis/apiSli
 import { addExchange } from "../../integrations/features/exchange/exchangeSlice"
 import { useAppDispatch } from "../../integrations/hooks"
 import { addAlert } from "../../integrations/features/alert/alertSlice"
+import { setLoading } from "../../integrations/features/meta/metaSlice"
+import formStyles from "../../styles/forms"
 
 const styles = {
     date: {display: "block",
@@ -44,7 +46,11 @@ export default function GetTransactionForm({customers,payees,user}:
 
 const dispatch = useAppDispatch();
 const [getExchange, { data: transactionData, error: transactionError, 
-  isLoading: transactionLoading }] = useLazyGetExchangeQuery()
+  isLoading}] = useLazyGetExchangeQuery()
+
+      useEffect(()=>{
+              dispatch(setLoading(isLoading))
+          },[isLoading])
 
 useEffect(() => {
   if (transactionData && transactionData.transactions) {
@@ -57,9 +63,14 @@ useEffect(() => {
 
 }, [transactionData]);
 
+const [querried,setQuerried] = useState(false)
+
 const reset = () =>{
   getExchange({ data: "", action: "" , token: user.usertoken });
+  setQuerried(false)
 }
+
+
 
 const getOptions = (list:any[],type:string) =>{
 
@@ -83,11 +94,11 @@ const getOptions = (list:any[],type:string) =>{
 
 const payeeOptions = getOptions(payees,'payee')
 const customerOptions = getOptions(customers,'customers')
-const init = {date:"",customer:'',payee:''}
+const init = {date:"",customer:'',payee:'',transaction_id:""}
 const [formState,setFormState] = useState(init)
-const [neeededInfo,setNeededInfo] = useState({date:false,customer:true,payee:false})
+const [neeededInfo,setNeededInfo] = useState({date:false,customer:true,payee:false,transaction_id:false})
 
-const onDateChange = (e: React.ChangeEvent<HTMLInputElement>) =>{
+const onChange = (e: React.ChangeEvent<HTMLInputElement>) =>{
   setFormState({ ...formState, [e.target.name]: e.target.value })
 }
 const selectChange = (option:any,target:string) =>{
@@ -114,7 +125,9 @@ const handleSubmit = (e: React.FormEvent<HTMLFormElement>) =>{
   const data = { data: formState[action], action: action , token: user.usertoken };
   getExchange(data)
   setFormState(init)
-  setNeededInfo({date:false,customer:true,payee:false})
+  setNeededInfo({date:false,customer:true,payee:false,transaction_id:false})
+  setQuerried(true)
+
   // use `data` for the request...
 }
 
@@ -123,24 +136,29 @@ const handleSubmit = (e: React.FormEvent<HTMLFormElement>) =>{
         <form onSubmit={handleSubmit} >
             <select style={styles.select}
                 name="neededInfo"
-                value={neeededInfo.customer ? "customer" : neeededInfo.payee ? "payee" : "date"}
+                value={neeededInfo.customer ? "customer" :
+                   neeededInfo.payee ? "payee" :neeededInfo.transaction_id ? "transaction_id" : "date"}
                 onChange={(e) =>
                     setNeededInfo({
                         date: e.target.value === "date",
                         customer: e.target.value === "customer",
                         payee: e.target.value === "payee",
+                        transaction_id: e.target.value == "transaction_id",
+
                     })
                 }
             >
                 <option value="date">Date</option>
                 <option value="customer">Customer</option>
                 <option value="payee">Payee</option>
+                <option value="transaction_id">Transaction ID</option>
+
             </select>
 
             {neeededInfo.date?
             <>
             <label htmlFor="date">Date</label>
-             <input type="date" style={styles.date} name="date" onChange={onDateChange} required />
+             <input type="date" style={styles.date} name="date" onChange={onChange} required />
              </>:
             neeededInfo.customer ?
              <>
@@ -169,12 +187,27 @@ const handleSubmit = (e: React.FormEvent<HTMLFormElement>) =>{
                     required
                    className="select"
                    />
-            </>
+            </>:
+          neeededInfo.transaction_id? 
+           <>
+            <label htmlFor="transaction_id">Transaction Id</label>
+             <input type="text" style={styles.date} name="transaction_id" onChange={onChange} required />
+             </>
             :
             null}
-            <button style={styles.submitBtn} type="submit">Get Transcations</button>
+            <button   style={{ ...formStyles.submitBtn, width:'100%'
+, 
+                                            ...(isLoading ? { backgroundColor: '#808080', cursor: 'not-allowed' } 
+                                                : {backgroundColor: "#0b5fff", cursor: 'pointer'}) }} 
+                disabled={isLoading}
+                type="submit">Get Transcations</button>
         </form>
-         <button style={styles.submitBtn} onClick={reset}>Reset</button>
+        
+          {querried?<button   style={{ ...formStyles.submitBtn, width:'100%',
+                                ...(isLoading ? { backgroundColor: '#808080', cursor: 'not-allowed' } 
+                                    : {backgroundColor: "#0b5fff", cursor: 'pointer'}) }} 
+                        disabled={isLoading}
+           onClick={reset}>Reset</button>:null}
 
     </div>
   )

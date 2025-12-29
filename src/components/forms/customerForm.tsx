@@ -1,14 +1,20 @@
+import { useEffect } from "react";
 import { addAlert } from "../../integrations/features/alert/alertSlice";
 import { useCustomerMutation } from "../../integrations/features/apis/apiSlice";
 import { addSingleCustomer } from "../../integrations/features/customer/customerSlice";
 import { useAppDispatch } from "../../integrations/hooks";
 import formStyles from "../../styles/forms";
+import { setLoading } from "../../integrations/features/meta/metaSlice";
 
 
 const CustomerForm = ({user,customerForm, setCustomerForm}:any) =>{
 
-        const [customerApi, { isLoading: cLoading }] = useCustomerMutation();
+        const [customerApi, { isLoading}] = useCustomerMutation();
         const dispatch = useAppDispatch();
+
+        useEffect(()=>{
+            dispatch(setLoading(isLoading))
+                },[isLoading])
         
         const CustomerOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCustomerForm({ ...customerForm, [e.target.name]: e.target.value });
@@ -48,7 +54,11 @@ const CustomerForm = ({user,customerForm, setCustomerForm}:any) =>{
                                 <input style={formStyles.input} type="text" placeholder="Full Name" name="full_name" value={customerForm.full_name} onChange={CustomerOnChange} required />
                                 <input style={formStyles.input} type="text" placeholder="Phone Number" name="phone_number" value={customerForm.phone_number} onChange={CustomerOnChange} required />
                                 <input style={formStyles.input} type="email" placeholder="Email" name="email" value={customerForm.email} onChange={CustomerOnChange} />
-                                <button style={formStyles.submitBtn} type="submit">{customerForm.id ? "Update Customer" : "Add Customer"}</button>
+                                <button   style={{ ...formStyles.submitBtn, 
+                                ...(isLoading ? { backgroundColor: '#808080', cursor: 'not-allowed' } 
+                                    : {backgroundColor: "#0b5fff", cursor: 'pointer'}) }} 
+                                disabled={isLoading}
+                                 type="submit">{customerForm.id ? "Update Customer" : "Add Customer"}</button>
                             </form>
                         </div>
 

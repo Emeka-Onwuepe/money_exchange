@@ -5,6 +5,7 @@ import formStyles from "../../styles/forms";
 import { loginUser, logoutUser } from "../../integrations/features/user/usersSlice";
 import { useNavigate } from "react-router";
 import { addAlert } from "../../integrations/features/alert/alertSlice";
+import { setLoading } from "../../integrations/features/meta/metaSlice";
 
 const style = {
     container: {
@@ -12,21 +13,22 @@ const style = {
         flexDirection: 'column' as 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        height: '60vh',
-        width:'60vh',
-        margin: 'auto',
-        padding: '10px',
-        borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        // height: '60vh',
+        // width:'60vh',
+        marginTop: '50px',
+        padding: '100px 10px',
+        borderRadius: '20px',
+        backgroundColor: '#fff',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
     },
     form: {
         display: 'flex',
         flexDirection: 'column' as 'column',
-        padding: '20px',
+        padding: '50px',
         borderRadius: '5px',
         backgroundColor: '#fff',
         boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',  
-        width: '80%',
+        width: '60%',
 
     },
     input: {
@@ -53,8 +55,12 @@ const LoginForm = () =>{
         const navigate = useNavigate()
         const user = useAppSelector(state=>state.user)
 
-        const [loginApi, { isLoading: pLoading }] = useLoginMutation();
+        const [loginApi, { isLoading }] = useLoginMutation();
         const dispatch = useAppDispatch();
+
+        useEffect(()=>{
+            dispatch(setLoading(isLoading))
+        },[isLoading])
 
          useEffect(()=>{
             if(user.logedin && user.verified){ 
@@ -112,9 +118,14 @@ const LoginForm = () =>{
                             value={loginForm.password} 
                             onChange={userOnChange} 
                         />
-                        <button 
-                            style={formStyles.submitBtn} 
+                        <button  
                             type="submit"
+                            disabled={isLoading}
+
+                            style={{ ...formStyles.submitBtn, 
+                                ...(isLoading ? { backgroundColor: '#808080', cursor: 'not-allowed' } 
+                                    : {backgroundColor: "#0b5fff", cursor: 'pointer'}) }} 
+                        
                         >
                             Login
                         </button>

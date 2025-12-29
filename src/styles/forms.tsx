@@ -50,6 +50,17 @@ const formStyles: { [k: string]: CSSProperties } = {
         cursor: "pointer",
         fontWeight: 600,
     },
+     GraysubmitBtn: {
+        marginTop: 8,
+        padding: "8px 12px",
+        borderRadius: 6,
+        border: "none",
+        background: "808080",
+        color: "#fff",
+        cursor: "not-allowed",
+        fontWeight: 600,
+    },
+
     listsColumn: {
         flex: 1,
         minWidth: 420,

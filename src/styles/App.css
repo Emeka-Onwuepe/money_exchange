@@ -143,3 +143,8 @@ nav{
 .active{
   border: 2px solid rgb(11, 95, 255);
 }
+
+#disabledBtn {
+  background-color: grey;
+  cursor: not-allowed;
+}

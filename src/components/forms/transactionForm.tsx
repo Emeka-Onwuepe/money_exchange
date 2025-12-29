@@ -6,6 +6,7 @@ import { baseUrl, useExchangeMutation } from "../../integrations/features/apis/a
 import axios from "axios";
 import { useEffect, useState, type ChangeEvent } from "react";
 import { addAlert } from "../../integrations/features/alert/alertSlice";
+import { setLoading } from "../../integrations/features/meta/metaSlice";
 
 
 
@@ -41,7 +42,11 @@ const user =  useAppSelector(state=>state.user)
 const customers =  useAppSelector(state=>state.customers.data)
 const payees =  useAppSelector(state=>state.payees.data)
 const dispatch = useAppDispatch();
-const [exchangeApi, { isLoading: cLoading }] = useExchangeMutation();
+const [exchangeApi, { isLoading}] = useExchangeMutation();
+
+useEffect(()=>{
+  dispatch(setLoading(isLoading))
+    },[isLoading])
 
 const getOptions = (list:any[],type:string) =>{
 
@@ -233,7 +238,12 @@ console.log('filedata',fileData)
 
       </div>
       </div>
-      <button style={formStyles.submitBtn} type="submit">Add Transaction</button>
+      <button
+        style={{ ...formStyles.submitBtn, 
+              ...(isLoading ? { backgroundColor: '#808080', cursor: 'not-allowed' } 
+           : {backgroundColor: "#0b5fff", cursor: 'pointer'}) }} 
+      
+      type="submit">Add Transaction</button>
     </form>
 	</div>
   );

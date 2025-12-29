@@ -1,8 +1,9 @@
+import { useEffect } from "react";
 import { addAlert } from "../../integrations/features/alert/alertSlice";
 import { usePaymentMutation } from "../../integrations/features/apis/apiSlice";
-import { addSinglePayment } from "../../integrations/features/payment/paymentSlice";
 import { useAppDispatch } from "../../integrations/hooks";
 import formStyles from "../../styles/forms";
+import { setLoading } from "../../integrations/features/meta/metaSlice";
 
 interface PayeeInterface {
     [key:string]:string
@@ -11,8 +12,12 @@ interface PayeeInterface {
 
 const PaymentForm = ({user,paymentForm, setPayments, setpaymentForm,transaction}:any) =>{
 
-        const [paymentApi, { isLoading: pLoading }] = usePaymentMutation();
+        const [paymentApi, { isLoading }] = usePaymentMutation();
         const dispatch = useAppDispatch();
+
+         useEffect(()=>{
+                    dispatch(setLoading(isLoading))
+                },[isLoading])
         
         const paymentOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setpaymentForm({ ...paymentForm, [e.target.name]: e.target.value });
@@ -65,7 +70,10 @@ const PaymentForm = ({user,paymentForm, setPayments, setpaymentForm,transaction}
                             <form style={formStyles.form} onSubmit={OnSubmitpayment}>
                                 <input style={formStyles.input} type="text" placeholder="0.0" 
                                 name="amount" value={paymentForm.amount} onChange={paymentOnChange} required />
-                                <button style={formStyles.submitBtn} 
+                                <button
+                                style={{ ...formStyles.submitBtn, 
+                                                        ...(isLoading ? { backgroundColor: '#808080', cursor: 'not-allowed' } 
+                                                            : {backgroundColor: "#0b5fff", cursor: 'pointer'}) }} 
                                 type="submit">{paymentForm.id ? "Update payment" : "Add payment"}</button>
                             </form>
                         </div>

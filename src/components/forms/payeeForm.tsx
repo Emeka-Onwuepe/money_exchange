@@ -1,15 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePayeeMutation } from "../../integrations/features/apis/apiSlice";
 import { useAppDispatch } from "../../integrations/hooks";
 import formStyles from "../../styles/forms";
 import { addSinglePayee } from "../../integrations/features/payee/payeeSlice";
 import { addAlert } from "../../integrations/features/alert/alertSlice";
+import { setLoading } from "../../integrations/features/meta/metaSlice";
 
 
 const PayeeForm = ({user,payeeForm, setPayeeForm}:any) =>{
 
-        const [payeeApi, { isLoading: pLoading }] = usePayeeMutation();
+        const [payeeApi, { isLoading}] = usePayeeMutation();
         const dispatch = useAppDispatch();
+
+         useEffect(()=>{
+                    dispatch(setLoading(isLoading))
+                },[isLoading])
         
         const PayeeOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                 setPayeeForm({ ...payeeForm, [e.target.name]: e.target.value });
@@ -48,7 +53,11 @@ const PayeeForm = ({user,payeeForm, setPayeeForm}:any) =>{
                         <input style={formStyles.input} type="text" placeholder="Full Name" name="name" required value={payeeForm.name} onChange={PayeeOnChange} />
                         <input style={formStyles.input} type="text" placeholder="Phone Number" name="phone_number" value={payeeForm.phone_number} onChange={PayeeOnChange} />
                         <input style={formStyles.input} type="email" placeholder="Email" name="email" value={payeeForm.email} onChange={PayeeOnChange} />
-                        <button style={formStyles.submitBtn} type="submit">{payeeForm.id ? "Update Payee" : "Add Payee"}</button>
+                        <button
+                         style={{ ...formStyles.submitBtn, 
+                                                        ...(isLoading ? { backgroundColor: '#808080', cursor: 'not-allowed' } 
+                                                            : {backgroundColor: "#0b5fff", cursor: 'pointer'}) }} 
+                        type="submit">{payeeForm.id ? "Update Payee" : "Add Payee"}</button>
                     </form>
                 </div>
 

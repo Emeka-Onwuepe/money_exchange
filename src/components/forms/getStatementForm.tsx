@@ -3,6 +3,7 @@ import formStyles from "../../styles/forms";
 import { useAnalyticsMutation } from "../../integrations/features/apis/apiSlice";
 import { addAlert } from "../../integrations/features/alert/alertSlice";
 import { useAppDispatch } from "../../integrations/hooks";
+import { setLoading } from "../../integrations/features/meta/metaSlice";
 
 
 export default function GetStatementForm({user,setSource}:{user:any,setSource:any}) {
@@ -11,9 +12,12 @@ export default function GetStatementForm({user,setSource}:{user:any,setSource:an
     const [analyticsApi, { isLoading}] = useAnalyticsMutation();
     const dispatch = useAppDispatch();
     
+    useEffect(()=>{
+        dispatch(setLoading(isLoading))
+     },[isLoading])
 
-    const [formState, setFormState] = useState({start:new Date().toLocaleDateString(),
-        end:new Date().toLocaleDateString()})
+    const [formState, setFormState] = useState({start:new Date().toISOString().split('T')[0],
+        end:new Date().toISOString().split('T')[0]})
 
      const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormState({ ...formState, [e.target.name]: e.target.value });
@@ -38,6 +42,8 @@ export default function GetStatementForm({user,setSource}:{user:any,setSource:an
             if(isLoading) return;
             if(!user.usertoken) return;
             if(!formState.start || !formState.end) return;
+
+            // YYYY-MM-DD
 
             const data = {data:{data:formState,action},token:user.usertoken}
 
@@ -66,9 +72,18 @@ export default function GetStatementForm({user,setSource}:{user:any,setSource:an
                         <input style={formStyles.input} type="date" 
                         name="end" value={formState.end} onChange={onChange} />
                         
-                        <button style={formStyles.submitBtn} type="submit">Get</button>
+                        <button   style={{ ...formStyles.submitBtn, 
+                                ...(isLoading ? { backgroundColor: '#808080', cursor: 'not-allowed' } 
+                                    : {backgroundColor: "#0b5fff", cursor: 'pointer'}) }} 
+                        disabled={isLoading}
+                        type="submit">Get</button>
                     </form>
-                        <button  onClick={(e) => handleSubmit(e, 'download_statement')} style={formStyles.submitBtn} type="submit">Download</button>
+                        <button   style={{ ...formStyles.submitBtn, 
+                                ...(isLoading ? { backgroundColor: '#808080', cursor: 'not-allowed' } 
+                                    : {backgroundColor: "#0b5fff", cursor: 'pointer'}) }} 
+                        disabled={isLoading}
+                        onClick={(e) => handleSubmit(e, 'download_statement')} 
+                         type="submit">Download</button>
                 </div>
   )
 }

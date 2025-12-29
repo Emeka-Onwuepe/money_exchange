@@ -16,7 +16,13 @@ export default function Header() {
   const user = useAppSelector(state=>state.user)
   const dispatch = useAppDispatch()
   
-
+  let headerWidth = 0
+  let vw = window.innerWidth;
+  if(vw < 1280){
+    headerWidth = vw -20
+  }else{
+    headerWidth = 1280-20
+  }
 
   const Onclick = async() =>{
     if(action == 'login'){
@@ -32,7 +38,7 @@ export default function Header() {
 
   return (
 
-    <header>
+    <header style={{width:headerWidth}}>
        <div className="logo_div">
         <p>LOGO</p>
         </div>
@@ -55,7 +61,9 @@ export default function Header() {
 
         </nav>}
   
-        <button onClick={Onclick} className={class_name}>{button_text}</button>
+        <button style={{padding:"10px",border:'0px',  color:'white', 
+          ...(class_name == 'Log Out'?{backgroundColor:"#ff0b44ff"}: {backgroundColor:"#0b65ff"})}} 
+          onClick={Onclick} className={class_name}>{button_text}</button>
 
     </header>)
 
