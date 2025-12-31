@@ -8,27 +8,6 @@ import { useGetExchangeQuery } from './integrations/features/apis/apiSlice';
 import { useNavigate } from 'react-router';
 
 
-
-// const initialErrorState = {
-//         first_name: false, last_name: false, phone_number: false, email: false, phoneNumLength: false
-//     }
-//     useEffect(() => {
-//         storedispatch(load(LOADED))
-//     }, []);
-//     const [formstate, setFormstate] = useState(initialState);
-//     const [errorstate, setErrorstate] = useState(initialErrorState);
-//     const { first_name, last_name, phone_number, email, password, confirm_password } = formstate;
-//     let errorTest = {
-//         "name": /[^a-z\s]/i,
-//         "phone_number": /[^0-9+\s]/i,
-//         "email": /^[a-z]+\d*[a-z]*@[a-z]+\.\w+\s*$/gi,
-//     }
-
-//     const onChange = (e) => {
-//         setFormstate({ ...formstate, [e.target.name]: e.target.value })
-//     }
-
-
 interface transactionForm { id:string,base_currency: string, amount: number,
                              usd_rate: number, usd_price: number, naira_rate: number, 
                             paid_amount:number,channel:string, reciept: File|string,
@@ -78,7 +57,7 @@ const [transactionFormState, setTransactionFormState] = useState({ id:"",base_cu
             dispatch(addExchange({ data: transactionData.transactions, save: true }));
         }
     }, [transactionData]);
-  
+
 
 return(
   <>

@@ -17,7 +17,7 @@ export default function Incomes({ income,total_income,total_income_by_channel }:
   return (
     <div style={formStyles.sectionCard}>
         <h3 style={formStyles.sectionTitle}>Incomes</h3>
-        <table style={{ borderCollapse: "collapse", width: "100%" }}>
+        <table style={formStyles.table}>
             <thead style={formStyles.thead}>
                 <tr>
                     <th style={formStyles.th}>Date</th>

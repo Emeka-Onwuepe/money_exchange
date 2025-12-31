@@ -35,6 +35,11 @@
   margin: 0 auto;
   /* padding: 2rem; */
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content:space-between;
+  /* align-content: space-between; */
+  min-height: 100vh;
 }
 
 .logo {
@@ -78,11 +83,6 @@ label{
 .flex_item{
   width: 48%;
 }
-body{
-    background: rgb(246, 248, 250);
-    display: flex;
-    justify-content: center;
-}
 
 .sectionCard {
         background: #fff;
@@ -117,19 +117,41 @@ body{
 
 
 header {
-	background-color: white;
-  height: 80px;
+  background-color: white;
+  /* height: 80px; */
   margin-bottom: 15px;
   display: flex;
   flex-direction: row;
   padding: 10px;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  width: min(100vw, 1280px);
+  position: fixed;
+  z-index: 3;
+}
+
+.sperator header{
+  position: relative;
+  z-index: -3;
+}
+footer{
+    padding: 10px;
+    width: min(100vw, 1280px);
+
+}
+
+footer p, footer span {
+  font-size: 14px;
+
 }
 
 nav{
   display: flex;
   justify-content: space-evenly;
+  flex-wrap: wrap;
+   /* margin-bottom: 10px; */
+
 }
 
 #nav{
@@ -138,6 +160,8 @@ nav{
   color: rgb(11, 95, 255);
   font-size: 18px;
   font-weight: bolder;
+  /* margin-bottom: 10px; */
+
 }
 
 .active{
@@ -148,3 +172,51 @@ nav{
   background-color: grey;
   cursor: not-allowed;
 }
+
+
+.logo_div img {
+  height: 100px;
+  width: auto;
+}
+
+@media screen and (max-width:640px){
+  .flex_container{
+  justify-content: center;
+}
+
+#nav{
+  padding: 10px;
+  background-color: white;
+  color: rgb(11, 95, 255);
+  font-size: 14px;
+  font-weight: bolder;
+}
+
+header{
+flex-direction: column;
+}
+
+.logo_div img {
+  height: 50px;
+  width: auto;
+}
+
+
+header button {
+  padding:3px;
+  font-size: 12px
+}
+
+/* table{
+  width: 100vw;
+} */
+}
+
+@media screen and (max-width:1280px){
+#root {
+  margin: 0 ;
+
+}
+
+}
+

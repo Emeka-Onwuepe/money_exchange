@@ -30,6 +30,20 @@ const TransactionTable =  ({ setTransactionForm, checkNull,
 
     const [transactionSearch, settransactionSearch] = useState("");
 
+    const [width, setWidth] = useState('45%');
+    
+
+      useEffect(() => {
+            const updateHeaderWidth = () => {
+              const vw = window.innerWidth;
+              setWidth(vw < 640 ? '95%' : '45%' );
+            };
+        
+            updateHeaderWidth();
+            window.addEventListener('resize', updateHeaderWidth);
+            return () => window.removeEventListener('resize', updateHeaderWidth);
+          }, []);
+
        const pageSize = 20;
         const totalPages = Math.max(1, Math.ceil(transactions.length / pageSize));
 
@@ -115,11 +129,11 @@ const searchTransaction = (e: React.ChangeEvent<HTMLInputElement>) => {
                         <div>
                             {/* <p>Search Row</p> */}
                             <div className="flex_container  ">
-                            <div className="" style={styles.card}>
+                            <div className="" style={{...styles.card,width}}>
                                 <GetTransactionForm customers={customers} payees={payees} user={user} />
                             </div>
-                            <div className="" style={styles.card}>
-                            <label htmlFor="searchTransaction">Search</label>
+                            <div className="" style={{...styles.card,width}}>
+                            <label style={{color:'blue'}} htmlFor="searchTransaction">Search</label>
                             <input id="searchTransaction" style={formStyles.searchInput} 
                             type="text" name="searchTransaction" placeholder="Search base, name or payee" value={transactionSearch} onChange={searchTransaction} />
                             </div>

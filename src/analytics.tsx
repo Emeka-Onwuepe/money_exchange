@@ -23,7 +23,6 @@ export default function Analytics() {
   
   return (
     <div>
-         <div>analytics</div>
          <div className="forms">
             <GetStatementForm user={user} setSource={setSource}/>
             <TransactionTable transactions={source.transactions || []} />

@@ -13,12 +13,15 @@ import Analytics from './analytics.tsx'
 import SignUpForm from './components/forms/signUpForm.tsx'
 import LoginForm from './components/forms/loginForm.tsx'
 import Loading from './components/loading.tsx'
+import Footer from './components/footer.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
+      
     <BrowserRouter>
-    <Alert_System />
+        <Alert_System />
+
         <Header/>
         <Loading/>
 
@@ -33,6 +36,7 @@ createRoot(document.getElementById('root')!).render(
       <Route path="/payments/:transactionId" element={<Payments />} />
       {/* <Route path="/" element={<App />} /> */}
     </Routes>
+    <Footer/>
 
     </BrowserRouter>
     </Provider>

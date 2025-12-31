@@ -45,7 +45,8 @@ const Alert_System = () => {
   
   return (
     // <React.Fragment></React.Fragment>
-    <ToastContainer />
+    <div style={{position:'absolute'}}><ToastContainer /></div>
+    
   )
 }
 

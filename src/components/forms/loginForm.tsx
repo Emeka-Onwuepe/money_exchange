@@ -6,31 +6,10 @@ import { loginUser, logoutUser } from "../../integrations/features/user/usersSli
 import { useNavigate } from "react-router";
 import { addAlert } from "../../integrations/features/alert/alertSlice";
 import { setLoading } from "../../integrations/features/meta/metaSlice";
+import '../../styles/form.css'
 
 const style = {
-    container: {
-        display: 'flex',
-        flexDirection: 'column' as 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        // height: '60vh',
-        // width:'60vh',
-        marginTop: '50px',
-        padding: '100px 10px',
-        borderRadius: '20px',
-        backgroundColor: '#fff',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-    },
-    form: {
-        display: 'flex',
-        flexDirection: 'column' as 'column',
-        padding: '50px',
-        borderRadius: '5px',
-        backgroundColor: '#fff',
-        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',  
-        width: '60%',
-
-    },
+ 
     input: {
         marginBottom: '10px',
         padding: '10px',
@@ -48,6 +27,8 @@ const style = {
         cursor: 'pointer',
     },
 }
+
+
 
 
 const LoginForm = () =>{
@@ -96,8 +77,8 @@ const LoginForm = () =>{
                 };       
 
     return(
-       <div style={style.container}>
-                    <form style={style.form} onSubmit={OnSubmit}>
+       <div className="form-container">
+                    <form className="login-form" onSubmit={OnSubmit}>
                         <input 
                             style={style.input} 
                             type="tel" 

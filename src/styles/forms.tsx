@@ -3,7 +3,7 @@ import type { CSSProperties } from "react";
 const formStyles: { [k: string]: CSSProperties } = {
     page: {
         fontFamily: "Segoe UI, Roboto, Arial, sans-serif",
-        padding: 20,
+        // padding: 20,
         background: "#f6f8fa",
         color: "#222",
         minHeight: "100vh",
@@ -24,7 +24,7 @@ const formStyles: { [k: string]: CSSProperties } = {
     },
     formTitle: {
         margin: "0 0 12px 0",
-        fontSize: 18,
+        // fontSize: 18,
         color: "#0b5fff",
         textAlign:'center'
     },
@@ -48,7 +48,7 @@ const formStyles: { [k: string]: CSSProperties } = {
         background: "#0b5fff",
         color: "#fff",
         cursor: "pointer",
-        fontWeight: 600,
+        // fontWeight: 600,
     },
      GraysubmitBtn: {
         marginTop: 8,
@@ -58,7 +58,7 @@ const formStyles: { [k: string]: CSSProperties } = {
         background: "808080",
         color: "#fff",
         cursor: "not-allowed",
-        fontWeight: 600,
+        // fontWeight: 600,
     },
 
     listsColumn: {
@@ -68,13 +68,14 @@ const formStyles: { [k: string]: CSSProperties } = {
     sectionCard: {
         background: "#fff",
         borderRadius: 8,
-        padding: 16,
+        // padding: 16,
         boxShadow: "0 1px 4px rgba(15,15,15,0.06)",
-        marginBottom: 16,
+        // marginBottom: 16,
+        margin:"0px auto 16px auto"
     },
     sectionTitle: {
         margin: "0 0 12px 0",
-        fontSize: 18,
+        // fontSize: 18,
         color: "#0b5aaa",
         textTransform:"capitalize"
 
@@ -94,23 +95,29 @@ const formStyles: { [k: string]: CSSProperties } = {
         width:'90%'
     },
     table: {
-        width: "100%",
+        width: "95vw",
         borderCollapse: "collapse",
         fontSize: 14,
+        maxWidth: 1200,
+        display:'block',
+        overflowX: "scroll",
+        margin: "0px auto"
     },
     th: {
         textAlign: "center",
-        padding: "8px 10px",
+        padding: "8px",
         border: " 1.5px dotted black",
         // borderBottom: "2px dotted black",
         color: "black",
         // fontWeight: 600,
         background: "#fff",
+        fontSize:'14px'
     },
     td: {
-        padding: "10px 8px",
+        padding: "8px",
         borderBottom: "1px solid #f1f4f8",
         verticalAlign: "middle",
+        fontSize:14
     },
     smallBtn: {
         padding: "6px 8px",

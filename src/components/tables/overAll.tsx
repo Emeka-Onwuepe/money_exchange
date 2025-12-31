@@ -29,7 +29,7 @@ export default function OverAll({ overall, byCurrency}:
     <div>
         <div style={formStyles.sectionCard}>
         <h3 style={formStyles.sectionTitle}>Summary</h3>
-        <table style={{ borderCollapse: "collapse", width: "100%" }}>
+        <table style={formStyles.table}>
             <thead style={formStyles.thead}>
                 <tr>
                     <th style={formStyles.th}>Total Amount (Naira)</th>
@@ -55,7 +55,7 @@ export default function OverAll({ overall, byCurrency}:
 
          <div style={formStyles.sectionCard}>
         <h3 style={formStyles.sectionTitle}>Summary By Currency</h3>
-        <table style={{ borderCollapse: "collapse", width: "100%" }}>
+        <table style={formStyles.table}>
             <thead style={formStyles.thead}>
                 <tr>
                     <th style={formStyles.th}>Base Currency</th>

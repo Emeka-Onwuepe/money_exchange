@@ -15,6 +15,18 @@ import CustomerForm from "./components/forms/customerForm";
 import PayeeForm from "./components/forms/payeeForm";
 import { useNavigate } from "react-router";
 
+const styles = {
+    card:{  
+        // border: "1px solid #ccc",
+        borderRadius: 4,
+        padding: 16,
+        marginBottom: 16,
+        backgroundColor: "#fdfdfd",
+        boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+        width:"44%",
+
+    }
+}
 
 
 const Customers = () => {
@@ -23,6 +35,20 @@ const Customers = () => {
     const user = useAppSelector((state) => state.user);
     const dispatch = useAppDispatch();
     const navigate = useNavigate()
+
+      const [width, setWidth] = useState('45%');
+
+    useEffect(() => {
+        const updateHeaderWidth = () => {
+          const vw = window.innerWidth;
+          setWidth(vw < 640 ? '95%' : '45%' );
+        };
+    
+        updateHeaderWidth();
+        window.addEventListener('resize', updateHeaderWidth);
+        return () => window.removeEventListener('resize', updateHeaderWidth);
+      }, []);
+
 
     useEffect(()=>{
     if(!user.logedin || !user.verified){ 
@@ -68,12 +94,16 @@ const Customers = () => {
 
     return (
         <div style={formStyles.page}>
-            <div style={formStyles.headerRow}>
+            <div className="flex_container" >
+                <div style={{...styles.card,width}}>
                 <CustomerForm user={user} setCustomerForm={setCustomerForm} customerForm={customerForm} />
+                </div>
+                <div style={{...styles.card,width}}>
                 <PayeeForm  user={user} setPayeeForm={setPayeeForm} payeeForm={payeeForm}/>
+                </div>
             </div>
 
-            <div style={{ display: "flex", gap: 16, alignItems: "flex-start", flexWrap: "wrap" }}>
+            <div style={{ display: "flex", gap: 16, alignItems: "center", flexWrap: "wrap" }}>
 
                     <PayeeTable setPayeeForm={setPayeeForm} payees={payees} checkNull={checkNull} />
                     <CustomerTable setCustomerForm ={setCustomerForm} checkNull={checkNull} customers={customers}  />

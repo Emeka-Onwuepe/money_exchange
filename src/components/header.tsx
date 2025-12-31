@@ -2,6 +2,7 @@ import { NavLink, useLocation, useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "../integrations/hooks";
 import { logoutUser } from "../integrations/features/user/usersSlice";
 import { useLogoutMutation } from "../integrations/features/apis/apiSlice";
+import { useEffect, useState } from "react";
 
 export default function Header() {
 
@@ -15,14 +16,6 @@ export default function Header() {
   const [logoutApi, { isLoading: pLoading }] = useLogoutMutation();
   const user = useAppSelector(state=>state.user)
   const dispatch = useAppDispatch()
-  
-  let headerWidth = 0
-  let vw = window.innerWidth;
-  if(vw < 1280){
-    headerWidth = vw -20
-  }else{
-    headerWidth = 1280-20
-  }
 
   const Onclick = async() =>{
     if(action == 'login'){
@@ -37,15 +30,18 @@ export default function Header() {
   }
 
   return (
-
-    <header style={{width:headerWidth}}>
+    <div>
+    <header 
+    >
        <div className="logo_div">
-        <p>LOGO</p>
+        <img src="/logo.jpeg" alt="logo" />
         </div>
-        {location == 'signup' || location == 'login'? <></> :
+        
 
         <nav>
+                  {location == 'signup' || location == 'login'? <></> :
 
+          <>
         <NavLink className={({isActive,isPending,isTransitioning})=>
         isPending?"pending":isActive ?"active":isTransitioning?'transitioning':""} 
         id='nav' to={'/'}>Home</NavLink>
@@ -57,15 +53,57 @@ export default function Header() {
         <NavLink className={({isActive,isPending,isTransitioning})=>
         isPending?"pending":isActive ?"active":isTransitioning?'transitioning':""} 
         id='nav' to={'/analytics'}>Analytics</NavLink>
+        </>
 
+        }
 
-        </nav>}
-  
-        <button style={{padding:"10px",border:'0px',  color:'white', 
+                <button style={{padding:"7px 10px",border:'0px',  color:'white', marginLeft:'15px',
           ...(class_name == 'Log Out'?{backgroundColor:"#ff0b44ff"}: {backgroundColor:"#0b65ff"})}} 
           onClick={Onclick} className={class_name}>{button_text}</button>
 
-    </header>)
+
+        </nav>
+    </header>
+    <div className="sperator">
+
+       <header 
+    >
+       <div className="logo_div">
+        <img src="/logo.jpeg" alt="logo" />
+        </div>
+        
+
+        <nav>
+                  {location == 'signup' || location == 'login'? <></> :
+
+          <>
+        <NavLink className={({isActive,isPending,isTransitioning})=>
+        isPending?"pending":isActive ?"active":isTransitioning?'transitioning':""} 
+        id='nav' to={'/'}>Home</NavLink>
+
+        <NavLink className={({isActive,isPending,isTransitioning})=>
+        isPending?"pending":isActive ?"active":isTransitioning?'transitioning':""} 
+        id='nav' to={'/customers'}>Customers</NavLink>
+
+        <NavLink className={({isActive,isPending,isTransitioning})=>
+        isPending?"pending":isActive ?"active":isTransitioning?'transitioning':""} 
+        id='nav' to={'/analytics'}>Analytics</NavLink>
+        </>
+
+        }
+
+                <button style={{padding:"7px 10px",border:'0px',  color:'white', marginLeft:'15px',
+          ...(class_name == 'Log Out'?{backgroundColor:"#ff0b44ff"}: {backgroundColor:"#0b65ff"})}} 
+          onClick={Onclick} className={class_name}>{button_text}</button>
+
+
+        </nav>
+    </header>
+
+    </div>
+
+    </div>
+    
+    )
 
 }
-
