@@ -1,4 +1,6 @@
 import formStyles from "../../styles/forms";
+import { addCommas } from "../helper";
+
 
 
 interface overAll {
@@ -42,12 +44,12 @@ export default function OverAll({ overall, byCurrency}:
             </thead>
             <tbody>
                     <tr>
-                        <td style={formStyles.td}>{overall.total_naira}</td>
-                        <td style={formStyles.td}>{overall.total_payments_in_naira}</td>
-                        <td style={formStyles.td}>{overall.total_balance_in_naria}</td>
-                        <td style={formStyles.td}>{overall.total_usd_price}</td>
-                        <td style={formStyles.td}>{overall.total_usd_rate}</td>
-                        <td style={formStyles.td}>{overall.total_usd_gain}</td>
+                        <td style={formStyles.td}>{addCommas(overall.total_naira?.toFixed(2))}</td>
+                        <td style={formStyles.td}>{addCommas(overall.total_payments_in_naira?.toFixed(2))}</td>
+                        <td style={formStyles.td}>{addCommas(overall.total_balance_in_naria?.toFixed(2))}</td>
+                        <td style={formStyles.td}>{addCommas(overall.total_usd_price?.toFixed(2))}</td>
+                        <td style={formStyles.td}>{addCommas(overall.total_usd_rate?.toFixed(2))}</td>
+                        <td style={formStyles.td}>{addCommas(overall.total_usd_gain?.toFixed(2))}</td>
                     </tr>
             </tbody>
         </table>
@@ -72,13 +74,13 @@ export default function OverAll({ overall, byCurrency}:
                 {byCurrency.map((item, index) => (
                     <tr key={index} style={{ background: index % 2 ? "#ffffff" : "#fbfdff" }}>
                         <td style={formStyles.td}>{item.base_currency}</td>
-                        <td style={formStyles.td}>{item.total_amount}</td>
-                        <td style={formStyles.td}>{item.total_naira}</td>
-                        <td style={formStyles.td}>{item.total_payments_in_naira}</td>
-                        <td style={formStyles.td}>{item.total_balance_in_naria}</td>
-                        <td style={formStyles.td}>{item.total_usd_price}</td>
-                        <td style={formStyles.td}>{item.total_usd_rate}</td>
-                        <td style={formStyles.td}>{item.total_usd_gain}</td>
+                        <td style={formStyles.td}>{addCommas(item.total_amount.toFixed(2))}</td>
+                        <td style={formStyles.td}>{addCommas(item.total_naira.toFixed(2))}</td>
+                        <td style={formStyles.td}>{addCommas(item.total_payments_in_naira.toFixed(2))}</td>
+                        <td style={formStyles.td}>{addCommas(item.total_balance_in_naria.toFixed(2))}</td>
+                        <td style={formStyles.td}>{addCommas(item.total_usd_price.toFixed(2))}</td>
+                        <td style={formStyles.td}>{addCommas(item.total_usd_rate.toFixed(2))}</td>
+                        <td style={formStyles.td}>{addCommas(item.total_usd_gain.toFixed(2))}</td>
                     </tr>
                 ))}
             </tbody>

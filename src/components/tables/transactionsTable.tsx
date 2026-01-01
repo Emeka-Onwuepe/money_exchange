@@ -1,5 +1,6 @@
 import { useEffect, useState} from "react";
 import formStyles from "../../styles/forms";
+import { addCommas } from "../helper";
 
 export interface transaction {
     // allow extra fields if needed by other parts of the app
@@ -85,16 +86,16 @@ useEffect(()=>{
             <td style={formStyles.td}>{transaction.date}</td>  
             <td style={formStyles.td}>{transaction.transaction_id}</td>  
             <td style={formStyles.td}>{transaction.base_currency}</td>
-            <td style={formStyles.td}>{transaction.amount.toFixed(2)}</td>
-            <td style={formStyles.td}>{transaction.usd_price}</td>
-            <td style={formStyles.td}>{transaction.usd_rate}</td>
-            <td style={formStyles.td}>{(transaction.usd_bid).toFixed(1)}</td>
-            <td style={formStyles.td}>{(transaction.usd_ask).toFixed(1)}</td>
-             <td style={formStyles.td}>{(transaction.usd_gain).toFixed(1)}</td>
-            <td style={formStyles.td}>{transaction.naira_rate}</td>
-            <td style={formStyles.td}>{(transaction.naira).toFixed(1)}</td>
-            <td style={formStyles.td}>{(transaction.paid_amount).toFixed(1)}</td>
-            <td style={formStyles.td}>{(transaction.balance).toFixed(1)}</td>
+            <td style={formStyles.td}>{addCommas(transaction.amount.toFixed(2))}</td>
+            <td style={formStyles.td}>{addCommas(transaction.usd_price)}</td>
+            <td style={formStyles.td}>{addCommas(transaction.usd_rate)}</td>
+            <td style={formStyles.td}>{addCommas(transaction.usd_bid.toFixed(1))}</td>
+            <td style={formStyles.td}>{addCommas(transaction.usd_ask.toFixed(1))}</td>
+             <td style={formStyles.td}>{addCommas(transaction.usd_gain.toFixed(1))}</td>
+            <td style={formStyles.td}>{addCommas(transaction.naira_rate)}</td>
+            <td style={formStyles.td}>{addCommas(transaction.naira.toFixed(1))}</td>
+            <td style={formStyles.td}>{addCommas(transaction.paid_amount.toFixed(1))}</td>
+            <td style={formStyles.td}>{addCommas(transaction.balance.toFixed(1))}</td>
             <td style={formStyles.td}>{transaction.customer.full_name}</td>
             <td style={formStyles.td}>{transaction.payee.name}</td>
             </tr>) : null

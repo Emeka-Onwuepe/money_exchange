@@ -7,7 +7,7 @@ import axios from "axios";
 import { useEffect, useState, type ChangeEvent } from "react";
 import { addAlert } from "../../integrations/features/alert/alertSlice";
 import { setLoading } from "../../integrations/features/meta/metaSlice";
-
+import { addCommas,removeCommas } from "../helper";
 
 
 const sendTransaction = async (formdata:any,token:string) => {
@@ -81,7 +81,13 @@ const channelOptions = [{value:'transfer',label:'transfer'},
 const [fileData,setFile] = useState<File|"">()
 
 const TransactionOnChange = (e: ChangeEvent<HTMLInputElement>) =>{
+  if(e.target.name == 'amount'|| e.target.name == 'paid_amount'){
+  	setTransactionFormState({ ...transactionFormState, [e.target.name]: removeCommas(e.target.value) })
+
+  }else{
   	setTransactionFormState({ ...transactionFormState, [e.target.name]: e.target.value })
+
+  }
 	}
 
 const selectChange = (option:any,target:string) =>{
@@ -103,9 +109,10 @@ const handleFile = (e: ChangeEvent<HTMLInputElement>)=>{
 
 }
 
-useEffect(()=>{
-console.log('filedata',fileData)
-},[fileData])
+// useEffect(()=>{
+// console.log('filedata',fileData)
+// console.log('transactionFormState',transactionFormState)
+// },[fileData,transactionFormState])
 
 
   const OnSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
@@ -171,8 +178,8 @@ console.log('filedata',fileData)
        className="select"
       />
       <label htmlFor="Amount">Amount</label>
-      <input style={formStyles.input} type="number" step='0.1' name="amount" placeholder='0.1'
-       required value={transactionFormState.amount} onChange={TransactionOnChange} />
+      <input style={formStyles.input} type="text"  name="amount" placeholder='1,000'
+       required value={addCommas(transactionFormState.amount)} onChange={TransactionOnChange} />
       
       <label htmlFor="usd_rate">USD Rate</label>
       <input style={formStyles.input} name='usd_rate' type='number' step='0.1'  placeholder='0.0'
@@ -188,8 +195,8 @@ console.log('filedata',fileData)
 
        
        <label htmlFor="paid_amount">Paid Amount in Naira</label>
-      <input style={formStyles.input} name='paid_amount' type='number' step='0.1'  placeholder='0.0'
-       required  value={transactionFormState.paid_amount} onChange={TransactionOnChange} /> 
+      <input style={formStyles.input} name='paid_amount' type='text'  placeholder='1,000'
+       required  value={addCommas(transactionFormState.paid_amount)} onChange={TransactionOnChange} /> 
 
       </div>
 

@@ -4,6 +4,8 @@ import "./styles/payments.css"
 import { useEffect, useState } from "react"
 import { useGetPaymentsQuery } from "./integrations/features/apis/apiSlice"
 import PaymentForm from "./components/forms/paymentForm"
+import { addCommas } from "./components/helper";
+
 
 
 
@@ -27,7 +29,7 @@ const navigate = useNavigate()
 
     }
   },[user])
-const [paymentForm, setPaymentForm] = useState({ id: "", amount: "",
+const [paymentForm, setPaymentForm] = useState({ id: "", amount: 0,
                                                  transaction: parseInt(id) });
 
 const [paymentSum, setPaymentSum] = useState({ payments: 0, total: 0})
@@ -48,7 +50,7 @@ useEffect(()=>{
 
 let sum = 0
 
-payments.forEach(data => {
+payments.forEach((data:any) => {
   sum += data.amount
 });
  
@@ -66,18 +68,18 @@ setPaymentSum({payments:sum,total:sum+transaction.paid_amount})
            <p ><strong>Name:</strong><span>  {customer.full_name}</span></p>
 
                 <p ><strong>Base:</strong><span>  {transaction.base_currency}</span></p>
-                <p ><strong>Amount:</strong><span>  {transaction.amount}</span></p>
-                <p ><strong>USD Price:</strong><span>  {transaction.usd_price}</span></p>
-                <p ><strong>USD Rate:</strong><span>  {transaction.usd_rate}</span></p>
-                <p ><strong>USD Ask:</strong><span>  {transaction.usd_ask}</span></p>
-                <p ><strong>USD Bid:</strong><span>  {transaction.usd_bid}</span></p>
-                <p ><strong>USD Gain:</strong><span>  {transaction.usd_gain}</span></p>
-                <p ><strong>Naira Rate:</strong><span>  {transaction.naira_rate}</span></p>
-                <p ><strong>Naira:</strong><span>  {transaction.naira}</span></p>
-                <p ><strong>Paid Amount:</strong><span>  {transaction.paid_amount}</span></p>
-                <p ><strong>Payments:</strong><span>  {paymentSum.payments}</span></p>
-                <p ><strong>Total Payments:</strong><span>  {paymentSum.total}</span></p>
-                <p ><strong>Balance:</strong><span>  {paymentSum.total - transaction.naira}</span></p>
+                <p ><strong>Amount:</strong><span>  {addCommas(transaction.amount)}</span></p>
+                <p ><strong>USD Price:</strong><span>  {addCommas(transaction.usd_price)}</span></p>
+                <p ><strong>USD Rate:</strong><span>  {addCommas(transaction.usd_rate)}</span></p>
+                <p ><strong>USD Ask:</strong><span>  {addCommas(transaction.usd_ask)}</span></p>
+                <p ><strong>USD Bid:</strong><span>  {addCommas(transaction.usd_bid)}</span></p>
+                <p ><strong>USD Gain:</strong><span>  {addCommas(transaction.usd_gain)}</span></p>
+                <p ><strong>Naira Rate:</strong><span>  {addCommas(transaction.naira_rate)}</span></p>
+                <p ><strong>Naira:</strong><span>  {addCommas(transaction.naira)}</span></p>
+                <p ><strong>Paid Amount:</strong><span>  {addCommas(transaction.paid_amount)}</span></p>
+                <p ><strong>Payments:</strong><span>  {addCommas(paymentSum.payments)}</span></p>
+                <p ><strong>Total Payments:</strong><span>  {addCommas(paymentSum.total)}</span></p>
+                <p ><strong>Balance:</strong><span>  {addCommas(paymentSum.total - transaction.naira)}</span></p>
                 <p ><strong>Payee:</strong><span>  {payee.full_name}</span></p>
                 <p ><strong>Receipt:</strong><span>  {transaction.reciept?<a target="blank" href={transaction.reciept}>View</a>: "no reciept"}</span></p>
        </div>
@@ -87,7 +89,7 @@ setPaymentSum({payments:sum,total:sum+transaction.paid_amount})
         {payments && (payments.map((payment: any, index: number) => (
             <div key={index} className="payments">
                 <p>{payment.date}</p>
-                <p>{payment.amount}</p>
+                <p>{addCommas(payment.amount)}</p>
                 <button onClick={()=>setPaymentForm(payment)}>Edit</button>
             </div>)
             ))}

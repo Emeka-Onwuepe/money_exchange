@@ -1,3 +1,4 @@
+import { addCommas } from "../helper";
 import formStyles from "../../styles/forms";
 
 interface Income {
@@ -36,11 +37,11 @@ export default function Incomes({ income,total_income,total_income_by_channel }:
                     <tr key={index} style={{ background: index % 2 ? "#ffffff" : "#fbfdff" }}>
                         <td style={formStyles.td}>{item.date}</td>
                         <td style={formStyles.td}>{item.full_name}</td>
-                        <td style={formStyles.td}>{item.paid_amount}</td>
+                        <td style={formStyles.td}>{addCommas(item.paid_amount)}</td>
                         <td style={formStyles.td}>{item.payee_name}</td>
                         <td style={formStyles.td}>{item.transactionId}</td>
                         <td style={formStyles.td}>{item.base_currency}</td>
-                        <td style={formStyles.td}>{item.transaction_amount}</td>
+                        <td style={formStyles.td}>{addCommas(item.transaction_amount)}</td>
                         <td style={formStyles.td}>{item.channel}</td>
                         <td style={formStyles.td}>{item.nature}</td>
                     </tr>
@@ -50,14 +51,14 @@ export default function Incomes({ income,total_income,total_income_by_channel }:
                 {Object.entries(total_income_by_channel).map(([channel, total]) => (
                     <tr key={channel}>
                         <td style={formStyles.td} colSpan={2}><strong style={{color:'black'}}>{channel}</strong></td>
-                        <td style={formStyles.td} colSpan={6} ><strong style={{color:'black'}}>{total}</strong></td>
+                        <td style={formStyles.td} colSpan={6} ><strong style={{color:'black'}}>{addCommas(total)}</strong></td>
                         <td style={formStyles.td} ></td>
 
                     </tr>
                 ))}
                 <tr>
                     <td style={formStyles.td} colSpan={2}><strong>Total Income</strong></td>
-                    <td style={formStyles.td} colSpan={6}><strong>{total_income}</strong></td>
+                    <td style={formStyles.td} colSpan={6}><strong>{addCommas(total_income)}</strong></td>
                     <td style={formStyles.td} ></td>
                 </tr>
             </tfoot>

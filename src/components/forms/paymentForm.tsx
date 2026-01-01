@@ -4,6 +4,8 @@ import { usePaymentMutation } from "../../integrations/features/apis/apiSlice";
 import { useAppDispatch } from "../../integrations/hooks";
 import formStyles from "../../styles/forms";
 import { setLoading } from "../../integrations/features/meta/metaSlice";
+import { addCommas,removeCommas } from "../helper";
+
 
 interface PayeeInterface {
     [key:string]:string
@@ -20,7 +22,7 @@ const PaymentForm = ({user,paymentForm, setPayments, setpaymentForm,transaction}
                 },[isLoading])
         
         const paymentOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setpaymentForm({ ...paymentForm, [e.target.name]: e.target.value });
+        setpaymentForm({ ...paymentForm, [e.target.name]: removeCommas(e.target.value) });
             };
     
         const OnSubmitpayment = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -55,7 +57,7 @@ const PaymentForm = ({user,paymentForm, setPayments, setpaymentForm,transaction}
 
                     // dispatch(addSinglePayment(res.data.payment));
 
-                    setpaymentForm({ id: "", amount: "", transaction});
+                    setpaymentForm({ id: "", amount: 0, transaction});
                 }else if(res.error){
                     dispatch(addAlert({...res.error, page:'PaymentForm'}))
                                }
@@ -68,8 +70,8 @@ const PaymentForm = ({user,paymentForm, setPayments, setpaymentForm,transaction}
         <div style={formStyles.formsColumn}>
                             <h3 style={formStyles.formTitle}>Add / Edit payment</h3>
                             <form style={formStyles.form} onSubmit={OnSubmitpayment}>
-                                <input style={formStyles.input} type="text" placeholder="0.0" 
-                                name="amount" value={paymentForm.amount} onChange={paymentOnChange} required />
+                                <input style={formStyles.input} type="text" placeholder="1,000" 
+                                name="amount" value={addCommas(paymentForm.amount)} onChange={paymentOnChange} required />
                                 <button
                                 style={{ ...formStyles.submitBtn, 
                                                         ...(isLoading ? { backgroundColor: '#808080', cursor: 'not-allowed' } 
