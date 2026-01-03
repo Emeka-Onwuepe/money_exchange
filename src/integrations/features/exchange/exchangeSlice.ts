@@ -66,7 +66,7 @@ export const exchangeSlice = createSlice({
     },
 
     addSingleExchange: (state, action) => {
-          state.data = [...state.data, action.payload]
+          state.data = [ action.payload ,...state.data]
             writeToLocalStorage("exchange", {data:state.data})
         },
 

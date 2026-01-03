@@ -1,10 +1,12 @@
 import { useNavigate, useParams } from "react-router"
-import { useAppSelector } from "./integrations/hooks"
+import { useAppDispatch, useAppSelector } from "./integrations/hooks"
 import "./styles/payments.css"
 import { useEffect, useState } from "react"
 import { useGetPaymentsQuery } from "./integrations/features/apis/apiSlice"
 import PaymentForm from "./components/forms/paymentForm"
 import { addCommas } from "./components/helper";
+import { setLoading } from "./integrations/features/meta/metaSlice"
+import { addAlert } from "./integrations/features/alert/alertSlice"
 
 
 
@@ -22,6 +24,8 @@ const [customer] = customers.filter(c=>c.id==transaction.customer)
 const [payee] = customers.filter(p=>p.id==transaction.payee)
 const [payments, setPayments] = useState<{[key: string]: any}>([])
 const navigate = useNavigate()
+const dispatch = useAppDispatch()
+
 
  useEffect(()=>{
     if(!user.logedin || !user.verified){ 
@@ -35,10 +39,21 @@ const [paymentForm, setPaymentForm] = useState({ id: "", amount: 0,
 const [paymentSum, setPaymentSum] = useState({ payments: 0, total: 0})
 
 
- const { data: paymentsData, error: paymentsError, isLoading: paymentsLoading } = useGetPaymentsQuery(
+ const { data: paymentsData, error, isLoading } = useGetPaymentsQuery(
         {token:user.usertoken,transaction_id:id}
     );
 
+
+useEffect(()=>{
+
+    dispatch(setLoading(isLoading))
+    if(error){
+        dispatch(addAlert({...error, page:'payments'}))
+                   }
+
+    },[isLoading,error])
+
+    
 useEffect(()=>{
     if(paymentsData && paymentsData.payments){
         setPayments(paymentsData.payments)   

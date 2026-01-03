@@ -144,6 +144,7 @@ const handleFile = (e: ChangeEvent<HTMLInputElement>)=>{
           else {
             form.append(key, String(value));
           }
+        }
         
         const res = await sendTransaction(form,user.usertoken)
         if (res.data.transaction) {
@@ -158,7 +159,7 @@ const handleFile = (e: ChangeEvent<HTMLInputElement>)=>{
                              }
 
           }
-  }
+  
 
 
   return (

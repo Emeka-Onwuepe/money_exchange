@@ -1,4 +1,4 @@
-import { useState} from "react";
+import { useEffect, useState} from "react";
 import formStyles from "../../styles/forms";
 
 export interface Payee {
@@ -7,8 +7,6 @@ export interface Payee {
     phone_number: string;
     email: string;
     address?: string | null;
-    // allow extra fields if needed by other parts of the app
-    // [key: string]: any;
 }
 
 
@@ -17,16 +15,18 @@ const PayeeTable =  ({ setPayeeForm, checkNull, payees }: {setPayeeForm:any,chec
 
         const [payeeSearch, setPayeeSearch] = useState("");
 
-       const pageSize = 20;
+        const pageSize = 20;
         const totalPages = Math.max(1, Math.ceil(payees.length / pageSize));
 
 
-    //    const params = new URLSearchParams(window.location.search);
-    //    const currentPage = Math.max(1, parseInt(params.get("payeePage") || "1", 10));
         const [payeeState, setPayeeState] = useState(payees.slice(0,pageSize));
         const [pagination,setPaginated] = useState({totalPages,currentPage:1})
 
-
+        useEffect(()=>{
+            setPayeeState(payees.slice(0,pageSize));
+            setPaginated({totalPages: Math.max(1, Math.ceil(payees.length / pageSize)),
+                currentPage: 1});
+        },[payees])
 
 
          const searchPayee = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,7 +38,7 @@ const PayeeTable =  ({ setPayeeForm, checkNull, payees }: {setPayeeForm:any,chec
                         payee.phone_number.toLowerCase().includes(value.toLowerCase()) ||
                         payee.email.toLowerCase().includes(value.toLowerCase())
                 );
-                console.log(value)
+                
                 if(value == ""){
                     const currentPage = pagination.currentPage - 1
                     const start = currentPage * pageSize
@@ -47,9 +47,7 @@ const PayeeTable =  ({ setPayeeForm, checkNull, payees }: {setPayeeForm:any,chec
                 }else{
                 setPayeeState(filtered);
                 }
-                // console.log('results',filtered)
-                // setPaginated(filtered)
-
+               
             };
 
     
@@ -60,15 +58,6 @@ const PayeeTable =  ({ setPayeeForm, checkNull, payees }: {setPayeeForm:any,chec
             const start = currentPage * pageSize
             const end = currentPage + pageSize
             setPayeeState(payees.slice(start,end))
-            // e.preventDefault();
-      
-            // const newPage = Math.min(totalPages, currentPage + 1);
-            // const params = new URLSearchParams(window.location.search);
-            // params.set("payeePage", String(newPage));
-            // window.history.replaceState({}, "", `${window.location.pathname}?${params.toString()}`);
-            // const start = (currentPage - 1) * pageSize;
-            // setPaginated(payeeState.slice(start, start + pageSize))
-            // setPayeeState((prev) => [...prev]);
                                                             
                         }
 
@@ -81,11 +70,6 @@ const PayeeTable =  ({ setPayeeForm, checkNull, payees }: {setPayeeForm:any,chec
             console.log(start,end)
             setPayeeState(payees.slice(start,end))
 
-            // const newPage = Math.max(1, currentPage - 1);
-            // const params = new URLSearchParams(window.location.search);
-            // params.set("payeePage", String(newPage));
-            // window.history.replaceState({}, "", `${window.location.pathname}?${params.toString()}`);
-            // setPayeeState((prev) => [...prev]);
             }
 
 
@@ -120,7 +104,7 @@ const PayeeTable =  ({ setPayeeForm, checkNull, payees }: {setPayeeForm:any,chec
                                                     <td style={formStyles.td}>{payee.email}</td>
                                                     <td style={formStyles.td}>{payee.address || "N/A"}</td>
                                                     <td style={formStyles.td}>
-                                                        <button style={formStyles.smallBtn} onClick={() => setPayeeForm(checkNull(payee))}>Edit</button>
+                                                        <button className="smallbtn" onClick={() => setPayeeForm(checkNull(payee))}>Edit</button>
                                                     </td>
                                                 </tr>
                                             ))}

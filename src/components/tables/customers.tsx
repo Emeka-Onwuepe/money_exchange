@@ -1,4 +1,4 @@
-import { useState} from "react";
+import { useEffect, useState} from "react";
 import formStyles from "../../styles/forms";
 
 export interface Customer {
@@ -27,7 +27,12 @@ const CustomerTable =  ({ setCustomerForm, checkNull, customers }: {setCustomerF
         const [pagination,setPaginated] = useState({totalPages,currentPage:1})
 
 
+        useEffect(()=>{
+            setCustomerState(customers.slice(0,pageSize));
+            setPaginated({totalPages: Math.max(1, Math.ceil(customers.length / pageSize)),
+                currentPage: 1});
 
+        },[customers])
 
          const searchCustomer = (e: React.ChangeEvent<HTMLInputElement>) => {
                 let value = e.target.value;
@@ -120,7 +125,7 @@ const CustomerTable =  ({ setCustomerForm, checkNull, customers }: {setCustomerF
                                                     <td style={formStyles.td}>{customer.email}</td>
                                                     <td style={formStyles.td}>{customer.address || "N/A"}</td>
                                                     <td style={formStyles.td}>
-                                                        <button style={formStyles.smallBtn} onClick={() => setCustomerForm(checkNull(customer))}>Edit</button>
+                                                        <button className="smallbtn" onClick={() => setCustomerForm(checkNull(customer))}>Edit</button>
                                                     </td>
                                                 </tr>
                                             ))}

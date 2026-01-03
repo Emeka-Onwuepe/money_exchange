@@ -6,6 +6,8 @@ import TransactionForm from './components/forms/transactionForm';
 import TransactionTable from './components/tables/transactions';
 import { useGetExchangeQuery } from './integrations/features/apis/apiSlice';
 import { useNavigate } from 'react-router';
+import { setLoading } from './integrations/features/meta/metaSlice';
+import { addAlert } from './integrations/features/alert/alertSlice';
 
 
 interface transactionForm { id:string,base_currency: string, amount: number,
@@ -25,13 +27,20 @@ const transactions = useAppSelector(state => state.exchange.data)
 const payees = useAppSelector(state => state.payees.data)
 
 const dispatch = useAppDispatch();
-const { data: transactionData, 
-  error: transactionError,
-   isLoading: transactionLoading } = useGetExchangeQuery({token:user.usertoken});
+const { data: transactionData, error,isLoading} = useGetExchangeQuery({token:user.usertoken});
+
+ useEffect(()=>{
+        dispatch(setLoading(isLoading))
+        if(error){
+              dispatch(addAlert({...error, page:'getStatementForm'}))
+                  }
+                    
+     },[isLoading])
+
 
 
 const [transactionFormState, setTransactionFormState] = useState({ id:"",base_currency: 'RMB', amount: 0.0,
-                             usd_rate: 16.8, usd_price: 17.0, naira_rate: 212.12, 
+                            usd_rate: 17.0, usd_price: 16.8,naira_rate: 212.12, 
                             paid_amount:0.0,channel:'transfer', reciept: "",
                              payee: '',customer:"" })
 

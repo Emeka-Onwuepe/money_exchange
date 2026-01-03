@@ -42,6 +42,7 @@ export const payeesSlice = createSlice({
       let data =  [...filtered, action.payload]
       // sort by id in descending order
       data.sort((a,b)=>b.id - a.id)
+      console.log('added',data)
       state.data = data
       writeToLocalStorage("payees", {data:state.data})
         },

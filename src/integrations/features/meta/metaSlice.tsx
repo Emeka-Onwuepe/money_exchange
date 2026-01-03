@@ -34,7 +34,6 @@ export const metaSlice = createSlice({
     },
     setLoading: (state, action) =>{
         state.loading = action.payload
-        console.log(state)
         writeToLocalStorage("meta", {Loading:state.loading})
 
     },

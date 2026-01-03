@@ -79,6 +79,20 @@ table{
   margin:0px auto;
 }
 
+.smallbtn{
+        padding: 6px 8px;
+        border-radius: 6px;
+        border: 1px solid #d0d7e0;
+        background: #fff;
+        cursor: pointer;
+}
+.smallbtn:active{
+  background-color: rgb(11, 95, 255);
+  border-color: rgb(11, 95, 255);
+  	color: white;
+
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

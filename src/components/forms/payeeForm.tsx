@@ -17,7 +17,14 @@ const PayeeForm = ({user,payeeForm, setPayeeForm}:any) =>{
                 },[isLoading])
         
         const PayeeOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-                setPayeeForm({ ...payeeForm, [e.target.name]: e.target.value });
+                if(e.target.name == "name"){
+                    setPayeeForm({ ...payeeForm, [e.target.name]: e.target.value.toLowerCase() });
+
+                }else{
+                    setPayeeForm({ ...payeeForm, [e.target.name]: e.target.value });
+
+                }
+
             };
         
             const OnSubmitPayee = async (e: React.FormEvent<HTMLFormElement>) => {

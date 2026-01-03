@@ -14,6 +14,8 @@ import PayeeTable from "./components/tables/payees";
 import CustomerForm from "./components/forms/customerForm";
 import PayeeForm from "./components/forms/payeeForm";
 import { useNavigate } from "react-router";
+import { setLoading } from "./integrations/features/meta/metaSlice";
+import { addAlert } from "./integrations/features/alert/alertSlice";
 
 const styles = {
     card:{  
@@ -56,13 +58,25 @@ const Customers = () => {
     }
   },[user])
 
-    const { data: customersData, error: customersError, isLoading: customersLoading } = useGetCustomerQuery(
+    const { data: customersData, error, isLoading} = useGetCustomerQuery(
         user.usertoken
     );
+
 
     const { data: payeesData, error: payeesError, isLoading: payeesLoading } = useGetPayeeQuery(user.usertoken);
     const [payeeForm, setPayeeForm] = useState({ id: "", name: "", phone_number: "", email: "" });
     const [customerForm, setCustomerForm] = useState({ id: "", full_name: "", phone_number: "", email: "" });
+
+
+useEffect(()=>{
+    dispatch(setLoading(isLoading))
+    if(error){
+        dispatch(addAlert({...error, page:'customers'}))
+                   }
+     if(payeesError){
+        dispatch(addAlert({...payeesError, page:'customers'}))
+                   }
+    },[isLoading,error,payeesError])
 
 
 
@@ -104,9 +118,10 @@ const Customers = () => {
             </div>
 
             <div style={{ display: "flex", gap: 16, alignItems: "center", flexWrap: "wrap" }}>
+                
+                    <CustomerTable setCustomerForm ={setCustomerForm} checkNull={checkNull} customers={customers}  />
 
                     <PayeeTable setPayeeForm={setPayeeForm} payees={payees} checkNull={checkNull} />
-                    <CustomerTable setCustomerForm ={setCustomerForm} checkNull={checkNull} customers={customers}  />
                 </div>
             
         </div>

@@ -56,7 +56,6 @@ const TransactionTable =  ({ setTransactionForm, checkNull,
         const [pagination,setPaginated] = useState({totalPages,currentPage:1})
 
 useEffect(()=>{
-    console.log("Transactions updated:", transactions);
     setTransactionState(transactions.slice(0,pageSize));
     setPaginated({totalPages: Math.max(1, Math.ceil(transactions.length / pageSize)),
          currentPage: 1});
@@ -192,7 +191,7 @@ const searchTransaction = (e: React.ChangeEvent<HTMLInputElement>) => {
             <td style={formStyles.td}>{transaction.reciept?<a target="blank" href={transaction.reciept}>View</a>: "no reciept"}</td>
             <td style={formStyles.td}>{!transaction.paid_once?<Link to={`/payments/${transaction.id}`}>payments</Link>:null}</td>
             <td style={formStyles.td}>
-             <button style={formStyles.smallBtn} onClick={() => setEdit(checkNull(transaction))}>Edit</button>
+             <button className="smallbtn" onClick={() => setEdit(checkNull(transaction))}>Edit</button>
             </td>
             </tr>) : null
                 ) )}

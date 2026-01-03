@@ -17,8 +17,17 @@ const CustomerForm = ({user,customerForm, setCustomerForm}:any) =>{
                 },[isLoading])
         
         const CustomerOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCustomerForm({ ...customerForm, [e.target.name]: e.target.value });
+
+         if(e.target.name == "full_name"){
+
+                setCustomerForm({ ...customerForm, [e.target.name]: e.target.value.toLowerCase() });
+                }else{
+
+                setCustomerForm({ ...customerForm, [e.target.name]: e.target.value });
+
+                }
             };
+            
     
         const OnSubmitCustomer = async (e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();

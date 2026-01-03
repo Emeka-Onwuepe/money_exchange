@@ -77,6 +77,7 @@ const formStyles: { [k: string]: CSSProperties } = {
         margin: "0 0 12px 0",
         // fontSize: 18,
         color: "#0b5aaa",
+        paddingTop:10,
         textTransform:"capitalize"
 
 
