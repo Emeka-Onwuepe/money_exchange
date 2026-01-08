@@ -15,7 +15,7 @@ const PayeeTable =  ({ setPayeeForm, checkNull, payees }: {setPayeeForm:any,chec
 
         const [payeeSearch, setPayeeSearch] = useState("");
 
-        const pageSize = 20;
+        const pageSize = 5;
         const totalPages = Math.max(1, Math.ceil(payees.length / pageSize));
 
 
@@ -42,7 +42,7 @@ const PayeeTable =  ({ setPayeeForm, checkNull, payees }: {setPayeeForm:any,chec
                 if(value == ""){
                     const currentPage = pagination.currentPage - 1
                     const start = currentPage * pageSize
-                    const end = currentPage + pageSize
+                    const end = start + pageSize
                     setPayeeState(payees.slice(start,end))
                 }else{
                 setPayeeState(filtered);
@@ -56,7 +56,7 @@ const PayeeTable =  ({ setPayeeForm, checkNull, payees }: {setPayeeForm:any,chec
             const currentPage = pagination.currentPage
             setPaginated({...pagination,currentPage:currentPage+1})
             const start = currentPage * pageSize
-            const end = currentPage + pageSize
+            const end = start + pageSize
             setPayeeState(payees.slice(start,end))
                                                             
                         }
@@ -66,7 +66,7 @@ const PayeeTable =  ({ setPayeeForm, checkNull, payees }: {setPayeeForm:any,chec
              const currentPage = pagination.currentPage - 1
             setPaginated({...pagination,currentPage:currentPage})
             const start = (currentPage-1) * pageSize
-            const end = (currentPage-1) + pageSize
+            const end = start + pageSize
             console.log(start,end)
             setPayeeState(payees.slice(start,end))
 
@@ -104,7 +104,11 @@ const PayeeTable =  ({ setPayeeForm, checkNull, payees }: {setPayeeForm:any,chec
                                                     <td style={formStyles.td}>{payee.email}</td>
                                                     <td style={formStyles.td}>{payee.address || "N/A"}</td>
                                                     <td style={formStyles.td}>
-                                                        <button className="smallbtn" onClick={() => setPayeeForm(checkNull(payee))}>Edit</button>
+                                                        <button className="smallbtn" onClick={() => {setPayeeForm(checkNull(payee))
+                                                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                                                        
+
+                                                        }}>Edit</button>
                                                     </td>
                                                 </tr>
                                             ))}

@@ -17,7 +17,7 @@ const CustomerTable =  ({ setCustomerForm, checkNull, customers }: {setCustomerF
 
         const [customerSearch, setCustomerSearch] = useState("");
 
-       const pageSize = 20;
+       const pageSize = 5;
         const totalPages = Math.max(1, Math.ceil(customers.length / pageSize));
 
 
@@ -47,7 +47,7 @@ const CustomerTable =  ({ setCustomerForm, checkNull, customers }: {setCustomerF
                 if(value == ""){
                     const currentPage = pagination.currentPage - 1
                     const start = currentPage * pageSize
-                    const end = currentPage + pageSize
+                    const end = start + pageSize
                     setCustomerState(customers.slice(start,end))
                 }else{
                 setCustomerState(filtered);
@@ -63,7 +63,7 @@ const CustomerTable =  ({ setCustomerForm, checkNull, customers }: {setCustomerF
             const currentPage = pagination.currentPage
             setPaginated({...pagination,currentPage:currentPage+1})
             const start = currentPage * pageSize
-            const end = currentPage + pageSize
+            const end = start + pageSize
             setCustomerState(customers.slice(start,end))
             // e.preventDefault();
       
@@ -82,7 +82,7 @@ const CustomerTable =  ({ setCustomerForm, checkNull, customers }: {setCustomerF
              const currentPage = pagination.currentPage - 1
             setPaginated({...pagination,currentPage:currentPage})
             const start = (currentPage-1) * pageSize
-            const end = (currentPage-1) + pageSize
+            const end = start + pageSize
             console.log(start,end)
             setCustomerState(customers.slice(start,end))
 
@@ -125,7 +125,10 @@ const CustomerTable =  ({ setCustomerForm, checkNull, customers }: {setCustomerF
                                                     <td style={formStyles.td}>{customer.email}</td>
                                                     <td style={formStyles.td}>{customer.address || "N/A"}</td>
                                                     <td style={formStyles.td}>
-                                                        <button className="smallbtn" onClick={() => setCustomerForm(checkNull(customer))}>Edit</button>
+                                                        <button className="smallbtn" onClick={() => {
+                                                            setCustomerForm(checkNull(customer))
+                                                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                                                            }}>Edit</button>
                                                     </td>
                                                 </tr>
                                             ))}

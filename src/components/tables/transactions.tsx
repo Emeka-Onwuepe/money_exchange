@@ -46,7 +46,7 @@ const TransactionTable =  ({ setTransactionForm, checkNull,
             return () => window.removeEventListener('resize', updateHeaderWidth);
           }, []);
 
-       const pageSize = 20;
+       const pageSize = 5;
         const totalPages = Math.max(1, Math.ceil(transactions.length / pageSize));
 
 
@@ -65,6 +65,8 @@ useEffect(()=>{
 const setEdit = (state:any) =>{
   const {reciept, ...rest} = state
   setTransactionForm({...rest,reciept:""})
+  document.getElementById('transactionForm')?.scrollIntoView({ behavior: 'smooth' });
+    
 }
 
 
@@ -90,7 +92,7 @@ const searchTransaction = (e: React.ChangeEvent<HTMLInputElement>) => {
                 if(value == ""){
                     const currentPage = pagination.currentPage - 1
                     const start = currentPage * pageSize
-                    const end = currentPage + pageSize
+                    const end = start + pageSize
                     setTransactionState(transactions.slice(start,end))
                 }else{
                 setTransactionState(filtered);
@@ -106,7 +108,7 @@ const searchTransaction = (e: React.ChangeEvent<HTMLInputElement>) => {
             const currentPage = pagination.currentPage
             setPaginated({...pagination,currentPage:currentPage+1})
             const start = currentPage * pageSize
-            const end = currentPage + pageSize
+            const end = start + pageSize
             setTransactionState(transactions.slice(start,end))
              
                         }
@@ -116,7 +118,7 @@ const searchTransaction = (e: React.ChangeEvent<HTMLInputElement>) => {
              const currentPage = pagination.currentPage - 1
             setPaginated({...pagination,currentPage:currentPage})
             const start = (currentPage-1) * pageSize
-            const end = (currentPage-1) + pageSize
+            const end = start + pageSize 
             setTransactionState(transactions.slice(start,end))
             }
 

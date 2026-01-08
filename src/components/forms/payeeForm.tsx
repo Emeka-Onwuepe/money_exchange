@@ -37,6 +37,8 @@ const PayeeForm = ({user,payeeForm, setPayeeForm}:any) =>{
                     if (res.data) {
                         dispatch(addSinglePayee(res.data.payee));
                         setPayeeForm({ id: "", name: "", phone_number: "", email: "" });
+                        dispatch(addAlert({status:200,message:"Payee added",page:'payeeForm'}))
+                        
                     }else if(res.error){
                         dispatch(addAlert({...res.error, page:'payeeForm'}))
                                    }
@@ -46,6 +48,8 @@ const PayeeForm = ({user,payeeForm, setPayeeForm}:any) =>{
                     if (res.data) {
                         dispatch(addSinglePayee(res.data.payee));
                         setPayeeForm({ id: "", name: "", phone_number: "", email: "" });
+                        dispatch(addAlert({status:200,message:"Payee Edited",page:'payeeForm'}))
+                        
                     }else if(res.error){
                         dispatch(addAlert({...res.error, page:'payeeForm'}))
                }
@@ -54,7 +58,7 @@ const PayeeForm = ({user,payeeForm, setPayeeForm}:any) =>{
 
 
     return(
-       <div style={formStyles.formsColumn}>
+       <div id="payeeForm" style={formStyles.formsColumn}>
                     <h3 style={formStyles.formTitle}>Add / Edit Payee</h3>
                     <form style={formStyles.form} onSubmit={OnSubmitPayee}>
                         <input style={formStyles.input} type="text" placeholder="Full Name" name="name" required value={payeeForm.name} onChange={PayeeOnChange} />

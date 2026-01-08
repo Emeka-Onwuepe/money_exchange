@@ -14,6 +14,7 @@ import SignUpForm from './components/forms/signUpForm.tsx'
 import LoginForm from './components/forms/loginForm.tsx'
 import Loading from './components/loading.tsx'
 import Footer from './components/footer.tsx'
+import ScrollToTop from './components/scrollToTop.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -23,6 +24,7 @@ createRoot(document.getElementById('root')!).render(
         <Alert_System />
 
         <Header/>
+        <ScrollToTop />
         <Loading/>
 
     <Routes>

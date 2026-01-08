@@ -107,8 +107,8 @@ useEffect(()=>{
     // }, [customers, payees]);
 
     return (
-        <div style={formStyles.page}>
-            <div className="flex_container" >
+        <div id='top' style={formStyles.page}>
+            <div  className="flex_container" >
                 <div style={{...styles.card,width}}>
                 <CustomerForm user={user} setCustomerForm={setCustomerForm} customerForm={customerForm} />
                 </div>

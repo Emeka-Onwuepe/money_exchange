@@ -38,6 +38,9 @@ const PaymentForm = ({user,paymentForm, setPayments, setpaymentForm,transaction}
                     setpaymentForm({ id: "", amount: "", transaction});
                 }
             } else {
+                // Update payment
+                const new_date = new Date(String(paymentForm.date)).toLocaleDateString('en-CA');
+                paymentForm = {...paymentForm,date:new_date}
                 const data = { data: { data: paymentForm, action: "update" }, token: user.usertoken };
                 let res = await paymentApi(data);
                 if (res.data) {

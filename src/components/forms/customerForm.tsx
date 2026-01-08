@@ -39,6 +39,8 @@ const CustomerForm = ({user,customerForm, setCustomerForm}:any) =>{
                 if (res.data) {
                     dispatch(addSingleCustomer(res.data.customer));
                     setCustomerForm({ id: "", full_name: "", phone_number: "", email: "" });
+                    dispatch(addAlert({status:200,message:"Customer added",page:'customerForm'}))
+
                 }else if (res.error) {
                     dispatch(addAlert({...res.error, page:'customerForm'}))
                                 }; 
@@ -48,6 +50,8 @@ const CustomerForm = ({user,customerForm, setCustomerForm}:any) =>{
                 if (res.data) {
                     dispatch(addSingleCustomer(res.data.customer));
                     setCustomerForm({ id: "", full_name: "", phone_number: "", email: "" });
+                    dispatch(addAlert({status:200,message:"Customer edited",page:'customerForm'}))
+
                 }else if (res.error) {
                     dispatch(addAlert({...res.error, page:'customerForm'}))
                             }; 
@@ -57,7 +61,7 @@ const CustomerForm = ({user,customerForm, setCustomerForm}:any) =>{
 
 
     return(
-        <div style={formStyles.formsColumn}>
+        <div id="customerForm" style={formStyles.formsColumn}>
                             <h3 style={formStyles.formTitle}>Add / Edit Customer</h3>
                             <form style={formStyles.form} onSubmit={OnSubmitCustomer}>
                                 <input style={formStyles.input} type="text" placeholder="Full Name" name="full_name" value={customerForm.full_name} onChange={CustomerOnChange} required />

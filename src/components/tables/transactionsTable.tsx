@@ -12,7 +12,7 @@ export interface transaction {
 const TransactionTable =  ({transactions}: 
     {transactions:transaction[]}) =>{
 
-       const pageSize = 20;
+       const pageSize = 5;
         const totalPages = Math.max(1, Math.ceil(transactions.length / pageSize));
 
 
@@ -35,7 +35,7 @@ useEffect(()=>{
             const currentPage = pagination.currentPage
             setPaginated({...pagination,currentPage:currentPage+1})
             const start = currentPage * pageSize
-            const end = currentPage + pageSize
+            const end = start + pageSize
             setTransactionState(transactions.slice(start,end))
              
                         }
@@ -45,7 +45,7 @@ useEffect(()=>{
              const currentPage = pagination.currentPage - 1
             setPaginated({...pagination,currentPage:currentPage})
             const start = (currentPage-1) * pageSize
-            const end = (currentPage-1) + pageSize
+            const end = start + pageSize
             setTransactionState(transactions.slice(start,end))
             }
 

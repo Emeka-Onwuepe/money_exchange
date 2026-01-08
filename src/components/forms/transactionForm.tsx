@@ -121,6 +121,7 @@ const handleFile = (e: ChangeEvent<HTMLInputElement>)=>{
 
     let form = new FormData();
     let formdData = transactionFormState
+    let action = 'created'
 
     if (transactionFormState.id == "") {
         form.append('action','create')
@@ -128,6 +129,8 @@ const handleFile = (e: ChangeEvent<HTMLInputElement>)=>{
         formdData = formdData_
     }else{
               form.append('action','update')
+              action = 'updated'
+
     }
 
     if(formdData.reciept == ""){
@@ -140,6 +143,9 @@ const handleFile = (e: ChangeEvent<HTMLInputElement>)=>{
             form.append(key, "");
           } else if (key == 'reciept'){
             form.append(key, fileData as Blob);
+          }else if(key == 'date'){
+            const new_date = new Date(String(value)).toLocaleDateString('en-CA');
+            form.append(key, new_date);
           }
           else {
             form.append(key, String(value));
@@ -153,9 +159,10 @@ const handleFile = (e: ChangeEvent<HTMLInputElement>)=>{
                              usd_rate: 17.0, usd_price: 16.8, naira_rate: 212.12,
                              paid_amount:0.0,channel:'transfer',
                              payee: '',customer:"" ,reciept:""});
+            dispatch(addAlert({status:200,message:`Transaction ${action}`,page:'transactionForm'}))                 
 
               }else if(res.success == false){
-                              dispatch(addAlert({...res.data, page:'getStatementForm'}))
+                              dispatch(addAlert({...res.data, page:'transactionForm'}))
                              }
 
           }
@@ -163,7 +170,7 @@ const handleFile = (e: ChangeEvent<HTMLInputElement>)=>{
 
 
   return (
-	<div style={formStyles.formsColumn}>
+	<div id="transactionForm" style={formStyles.formsColumn}>
     <h3 style={formStyles.formTitle}>Add / Edit Transactions</h3>
 	   <form style={formStyles.form} onSubmit={OnSubmit}>
       <div className="flex_container">
@@ -251,7 +258,7 @@ const handleFile = (e: ChangeEvent<HTMLInputElement>)=>{
               ...(isLoading ? { backgroundColor: '#808080', cursor: 'not-allowed' } 
            : {backgroundColor: "#0b5fff", cursor: 'pointer'}) }} 
       
-      type="submit">Add Transaction</button>
+      type="submit">{transactionFormState.id ? "Update Transaction" : "Add Transaction"}</button>
     </form>
 	</div>
   );
