@@ -10,13 +10,6 @@ import { setLoading } from './integrations/features/meta/metaSlice';
 import { addAlert } from './integrations/features/alert/alertSlice';
 
 
-interface transactionForm { id:string,base_currency: string, amount: number,
-                             usd_rate: number, usd_price: number, naira_rate: number, 
-                            paid_amount:number,channel:string, reciept: File|string,
-                             payee: string,customer:string }
-
-
-
 function App() {
 
 

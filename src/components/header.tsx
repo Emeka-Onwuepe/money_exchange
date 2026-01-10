@@ -2,7 +2,6 @@ import { NavLink, useLocation, useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "../integrations/hooks";
 import { logoutUser } from "../integrations/features/user/usersSlice";
 import { useLogoutMutation } from "../integrations/features/apis/apiSlice";
-import { useEffect, useState } from "react";
 
 export default function Header() {
 
@@ -13,7 +12,7 @@ export default function Header() {
   const action = location == 'signup'?'login':location == 'login'?"signup":"logout"
   const navigate = useNavigate()
 
-  const [logoutApi, { isLoading: pLoading }] = useLogoutMutation();
+  const [logoutApi] = useLogoutMutation();
   const user = useAppSelector(state=>state.user)
   const dispatch = useAppDispatch()
 

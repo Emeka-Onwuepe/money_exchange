@@ -76,16 +76,11 @@ export const exchangeSlice = createSlice({
           state.data = data
             writeToLocalStorage("exchange", {data:state.data})
         },
-
-    clearExchange :state=>{
-      state = initialData
-      writeToLocalStorage("exchange", initialData)
-    },
     
   },
 
 });
 
-export const { addExchange, addSingleExchange, clearExchange } = exchangeSlice.actions;
+export const { addExchange, addSingleExchange } = exchangeSlice.actions;
 
 export default exchangeSlice.reducer;

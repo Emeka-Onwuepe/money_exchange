@@ -2,11 +2,10 @@ import { useAppDispatch, useAppSelector } from "./../../integrations/hooks";
 import formStyles from "../../styles/forms";
 import Select from "react-select";
 import { addSingleExchange } from "../../integrations/features/exchange/exchangeSlice";
-import { baseUrl, useExchangeMutation } from "../../integrations/features/apis/apiSlice";
+import { baseUrl} from "../../integrations/features/apis/apiSlice";
 import axios from "axios";
-import { useEffect, useState, type ChangeEvent } from "react";
+import { useState, type ChangeEvent } from "react";
 import { addAlert } from "../../integrations/features/alert/alertSlice";
-import { setLoading } from "../../integrations/features/meta/metaSlice";
 import { addCommas,removeCommas } from "../helper";
 
 
@@ -42,11 +41,9 @@ const user =  useAppSelector(state=>state.user)
 const customers =  useAppSelector(state=>state.customers.data)
 const payees =  useAppSelector(state=>state.payees.data)
 const dispatch = useAppDispatch();
-const [exchangeApi, { isLoading}] = useExchangeMutation();
 
-useEffect(()=>{
-  dispatch(setLoading(isLoading))
-    },[isLoading])
+const [isLoading,setIsLoading] = useState(false)
+
 
 const getOptions = (list:any[],type:string) =>{
 
@@ -117,6 +114,7 @@ const handleFile = (e: ChangeEvent<HTMLInputElement>)=>{
 
   const OnSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
     e.preventDefault()
+    setIsLoading(true)
     if(transactionFormState.amount  == 0 || !transactionFormState.amount) return
 
     let form = new FormData();
@@ -160,11 +158,11 @@ const handleFile = (e: ChangeEvent<HTMLInputElement>)=>{
                              paid_amount:0.0,channel:'transfer',
                              payee: '',customer:"" ,reciept:""});
             dispatch(addAlert({status:200,message:`Transaction ${action}`,page:'transactionForm'}))                 
-
+              setIsLoading(false)
               }else if(res.success == false){
                               dispatch(addAlert({...res.data, page:'transactionForm'}))
+                              setIsLoading(false)
                              }
-
           }
   
 

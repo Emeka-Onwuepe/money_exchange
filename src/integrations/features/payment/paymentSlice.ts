@@ -44,16 +44,11 @@ export const paymentsSlice = createSlice({
       state.data = data
       writeToLocalStorage("payments", {data:state.data})
         },
-
-    clearPayments :state=>{
-      state = initialData
-      writeToLocalStorage("payments", initialData)
-    },
     
   },
 
 });
 
-export const { addPayments, addSinglePayment, clearPayments } = paymentsSlice.actions;
+export const { addPayments, addSinglePayment } = paymentsSlice.actions;
 
 export default paymentsSlice.reducer;

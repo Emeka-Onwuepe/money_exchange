@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {writeToLocalStorage, readFromLocalStorage} from '../../localStorage';
-import Loading from '../../../components/loading';
 
 
 const initialData = {

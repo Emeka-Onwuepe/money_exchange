@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "./integrations/hooks";
 import {
-    useCustomerMutation,
     useGetCustomerQuery,
     useGetPayeeQuery,
-    usePayeeMutation,
 } from "./integrations/features/apis/apiSlice";
-import { addCustomers, addSingleCustomer } from "./integrations/features/customer/customerSlice";
-import { addPayees, addSinglePayee } from "./integrations/features/payee/payeeSlice";
+import { addCustomers } from "./integrations/features/customer/customerSlice";
+import { addPayees } from "./integrations/features/payee/payeeSlice";
 import formStyles from "./styles/forms";
 import CustomerTable from "./components/tables/customers";
 import PayeeTable from "./components/tables/payees";
@@ -63,7 +61,7 @@ const Customers = () => {
     );
 
 
-    const { data: payeesData, error: payeesError, isLoading: payeesLoading } = useGetPayeeQuery(user.usertoken);
+    const { data: payeesData, error: payeesError} = useGetPayeeQuery(user.usertoken);
     const [payeeForm, setPayeeForm] = useState({ id: "", name: "", phone_number: "", email: "" });
     const [customerForm, setCustomerForm] = useState({ id: "", full_name: "", phone_number: "", email: "" });
 

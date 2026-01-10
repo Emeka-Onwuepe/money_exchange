@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useRegisterUserMutation } from "../../integrations/features/apis/apiSlice";
 import { useAppDispatch, useAppSelector } from "../../integrations/hooks";
 import formStyles from "../../styles/forms";
-import { loginUser, logoutUser } from "../../integrations/features/user/usersSlice";
+import { loginUser } from "../../integrations/features/user/usersSlice";
 import { useNavigate } from "react-router";
 import { addAlert } from "../../integrations/features/alert/alertSlice";
 import { setLoading } from "../../integrations/features/meta/metaSlice";

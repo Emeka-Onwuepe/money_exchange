@@ -47,15 +47,10 @@ export const customersSlice = createSlice({
             writeToLocalStorage("customers", {data:state.data})
         },
 
-    clearCustomers :state=>{
-      state = initialData
-      writeToLocalStorage("customers", initialData)
-    },
-    
   },
 
 });
 
-export const { addCustomers, addSingleCustomer, clearCustomers } = customersSlice.actions;
+export const { addCustomers, addSingleCustomer } = customersSlice.actions;
 
 export default customersSlice.reducer;
