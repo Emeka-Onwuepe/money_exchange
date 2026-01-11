@@ -13,7 +13,7 @@ return (
     <footer
      style={{backgroundColor:'black',color:'white',textAlign:'center',padding:'10px'}} 
      >
-        <p>Copyright &copy;<span id="footerdate">{getYear(2026)}</span> . All rights reserved. ####.com.ng <br/> Designed by Emeka Onwuepe.</p>
+        <p>Copyright &copy;<span id="footerdate">{getYear(2026)}</span> . All rights reserved. www.divineexservices.com.ng <br/> Designed by Emeka Onwuepe.</p>
       
     </footer>
   )

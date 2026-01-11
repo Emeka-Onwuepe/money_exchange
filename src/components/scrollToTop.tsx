@@ -27,8 +27,9 @@ export default function ScrollToTop() {
   }, []);
 
   return (
-    <div>
-      {isVisible && (
+      isVisible && (
+            <div>
+
         <button
           onClick={scrollToTopSmooth}
           style={{
@@ -48,8 +49,8 @@ export default function ScrollToTop() {
         >
           ↑
         </button>
-      )}
-    </div>
+          </div>
+      )
   );
 }
 

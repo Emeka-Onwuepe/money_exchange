@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 // Define a service using a base URL and expected endpoints
-export const base_url = 'http://localhost:8000'
+export const base_url = 'https://backend.divineexservices.com.ng'
 // export const base_url = "https://211c0d351888.ngrok-free.app"
 export const baseUrl = `${base_url}/api`
 
