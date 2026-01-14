@@ -61,7 +61,6 @@ export const exchangeSlice = createSlice({
       let save = action.payload.save
       delete action.payload.save
       state.data = action.payload.data
-      console.log(action.payload.data)
       save ? writeToLocalStorage("exchange", action.payload):null
         
     },
@@ -71,8 +70,9 @@ export const exchangeSlice = createSlice({
           let data =  [...filtered, action.payload]
           // sort by date in descending order
           
-          data.sort((a,b)=> new Date(b.date).getTime() - new Date(a.date).getTime() )
-          console.log('data',data)
+          // data.sort((a,b)=> new Date(b.date).getTime() - new Date(a.date).getTime() )
+          data.sort((a,b)=> b.id - a.id )
+
           state.data = data
             writeToLocalStorage("exchange", {data:state.data})
         },

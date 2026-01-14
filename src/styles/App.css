@@ -179,6 +179,19 @@ nav{
   width: auto;
 }
 
+input{
+  background-color: white;
+  color: black;
+}
+
+label{
+  color: black;
+}
+
+td{
+  color: black;
+}
+
 @media screen and (max-width:640px){
   .flex_container{
   justify-content: center;

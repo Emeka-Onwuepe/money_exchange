@@ -118,7 +118,8 @@ const formStyles: { [k: string]: CSSProperties } = {
         padding: "8px",
         borderBottom: "1px solid #f1f4f8",
         verticalAlign: "middle",
-        fontSize:14
+        fontSize:14,
+        color: 'black',
     },
     smallBtn: {
         padding: "6px 8px",

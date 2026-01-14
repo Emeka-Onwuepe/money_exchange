@@ -72,7 +72,6 @@ const payeeOptions = getOptions(payees,'payee')
 const customerOptions = getOptions(customers,'customers')
 const channelOptions = [{value:'transfer',label:'transfer'},
                         {value:'cash',label:'cash'},
-                        {value:'credit',label:'credit'}
 ]
 
 const [fileData,setFile] = useState<File|"">()

@@ -21,6 +21,14 @@ strong{
 margin: 10px;
 }
 
+.select div{
+	margin: 0px
+}
+
+#select{
+	margin-top: 0px;
+}
+
 .payments {
 	background-color: white;
 	box-shadow: 5px 5px 5px rgb(209, 240, 209);

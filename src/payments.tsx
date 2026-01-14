@@ -33,7 +33,7 @@ const dispatch = useAppDispatch()
 
     }
   },[user])
-const [paymentForm, setPaymentForm] = useState({ id: "", amount: 0,
+const [paymentForm, setPaymentForm] = useState({ id: "", amount: 0, channel:'transfer',
                                                  transaction: parseInt(id) });
 
 const [paymentSum, setPaymentSum] = useState({ payments: 0, total: 0})

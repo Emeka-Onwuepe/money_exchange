@@ -5,6 +5,7 @@ import { useAppDispatch } from "../../integrations/hooks";
 import formStyles from "../../styles/forms";
 import { setLoading } from "../../integrations/features/meta/metaSlice";
 import { addCommas,removeCommas } from "../helper";
+import Select from "react-select";
 
 
 interface PayeeInterface {
@@ -24,6 +25,16 @@ const PaymentForm = ({user,paymentForm, setPayments, setpaymentForm,transaction}
         const paymentOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setpaymentForm({ ...paymentForm, [e.target.name]: removeCommas(e.target.value) });
             };
+        
+        const channelOptions = [{value:'transfer',label:'transfer'},
+                        {value:'cash',label:'cash'},
+            ]
+        
+        const selectChange = (option:any,target:string) =>{
+                         const newValue = option ? option.value : ''
+                        setpaymentForm({...paymentForm, [target]: newValue})
+
+            }
     
         const OnSubmitpayment = async (e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
@@ -75,6 +86,19 @@ const PaymentForm = ({user,paymentForm, setPayments, setpaymentForm,transaction}
                             <form style={formStyles.form} onSubmit={OnSubmitpayment}>
                                 <input style={formStyles.input} type="text" placeholder="1,000" 
                                 name="amount" value={addCommas(paymentForm.amount)} onChange={paymentOnChange} required />
+                                
+                                <label htmlFor="channel">Channel</label>
+                                <Select
+                                      options={channelOptions}
+                                      value={channelOptions.find(c => c.value === paymentForm.channel) || null}
+                                       onChange={(option:any) => selectChange(option,'channel')}
+                                       isSearchable
+                                       name="channel"
+                                       placeholder="Select channel"
+                                        className="select"
+                                        id = 'select'
+                                       required
+                                /> 
                                 <button
                                 style={{ ...formStyles.submitBtn, 
                                                         ...(isLoading ? { backgroundColor: '#808080', cursor: 'not-allowed' } 

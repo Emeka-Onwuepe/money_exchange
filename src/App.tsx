@@ -8,6 +8,7 @@ import { useGetExchangeQuery } from './integrations/features/apis/apiSlice';
 import { useNavigate } from 'react-router';
 import { setLoading } from './integrations/features/meta/metaSlice';
 import { addAlert } from './integrations/features/alert/alertSlice';
+import { readFromLocalStorage, writeToLocalStorage } from './integrations/localStorage';
 
 
 function App() {
@@ -31,13 +32,30 @@ const { data: transactionData, error,isLoading} = useGetExchangeQuery({token:use
      },[isLoading])
 
 
-
+const [writeSate,SetWriteState] = useState(false)
 const [transactionFormState, setTransactionFormState] = useState({ id:"",base_currency: 'RMB', amount: 0.0,
                             usd_rate: 17.0, usd_price: 16.8,naira_rate: 212.12, 
                             paid_amount:0.0,channel:'transfer', reciept: "",
                              payee: '',customer:"" })
 
-    const checkNull = (data: any) => {
+
+
+   useEffect(() => {
+       const formData = readFromLocalStorage('transaction_form')
+       if(formData){
+        setTransactionFormState(formData)
+        SetWriteState(true)
+       }
+    }, []);
+
+   useEffect(() => {
+      if(writeSate){
+       writeToLocalStorage('transaction_form', {...transactionFormState})
+      }
+
+    }, [transactionFormState]);
+
+  const checkNull = (data: any) => {
         const Data = { ...data };
         for (const key in Data) {
             if (!Data[key]) {
