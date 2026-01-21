@@ -4,11 +4,16 @@ import { useEffect, useState } from 'react';
 import { addExchange } from './integrations/features/exchange/exchangeSlice';
 import TransactionForm from './components/forms/transactionForm';
 import TransactionTable from './components/tables/transactions';
-import { useGetExchangeQuery } from './integrations/features/apis/apiSlice';
+import { useGetExchangeQuery, 
+        useGetCustomerQuery,
+        useGetPayeeQuery, } from './integrations/features/apis/apiSlice';
 import { useNavigate } from 'react-router';
 import { setLoading } from './integrations/features/meta/metaSlice';
 import { addAlert } from './integrations/features/alert/alertSlice';
 import { readFromLocalStorage, writeToLocalStorage } from './integrations/localStorage';
+import { addCustomers } from './integrations/features/customer/customerSlice';
+import { addPayees } from './integrations/features/payee/payeeSlice';
+
 
 
 function App() {
@@ -23,19 +28,47 @@ const payees = useAppSelector(state => state.payees.data)
 const dispatch = useAppDispatch();
 const { data: transactionData, error,isLoading} = useGetExchangeQuery({token:user.usertoken});
 
+const { data: customersData, error: customersError} = useGetCustomerQuery(
+        user.usertoken
+    );
+
+const { data: payeesData, error: payeesError} = useGetPayeeQuery(user.usertoken);
+    
+
  useEffect(()=>{
         dispatch(setLoading(isLoading))
         if(error){
-              dispatch(addAlert({...error, page:'getStatementForm'}))
+              dispatch(addAlert({...error, page:'transactionPage'}))
                   }
                     
      },[isLoading])
 
+useEffect(() => {
+        if (customersData && customersData.customers) {
+            dispatch(addCustomers({ data: customersData.customers, save: true }));
+        }
+
+        if (payeesData && payeesData.payees) {
+            dispatch(addPayees({ data: payeesData.payees, save: true }));
+        }
+    }, [customersData, payeesData]);
+
+
+useEffect(()=>{
+    dispatch(setLoading(isLoading))
+    if(customersError){
+        dispatch(addAlert({...customersError, page:'transactionPage'}))
+                   }
+     if(payeesError){
+        dispatch(addAlert({...payeesError, page:'transactionPage'}))
+                   }
+    },[isLoading,customersError,payeesError])
+
 
 const [writeSate,SetWriteState] = useState(false)
 const [transactionFormState, setTransactionFormState] = useState({ id:"",base_currency: 'RMB', amount: 0.0,
-                            usd_rate: 17.0, usd_price: 16.8,naira_rate: 212.12, 
-                            paid_amount:0.0,channel:'transfer', reciept: "",
+                            usd_rate: 7.0, naira_rate_cp: 214.8, naira_rate_sp: 214.9,
+                            paid_amount:0.0,channel:'transfer', bank:'none', reciept: "",
                              payee: '',customer:"" })
 
 

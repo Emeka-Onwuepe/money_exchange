@@ -12,7 +12,7 @@ export default function Analytics() {
   
       const[source,setSource] = useState<{ transactions?: any[],incomes?:any[],
         total_income?:number,overall?:any,by_currency?:any[],
-         total_income_by_channel?: any }>({})
+         total_income_by_channel?: any, total_income_by_bank?: any }>({})
 
 
      useEffect(()=>{
@@ -28,8 +28,10 @@ export default function Analytics() {
             <TransactionTable transactions={source.transactions || []} />
             <Incomes income={source.incomes || []}  
             total_income={source.total_income || 0}
+             byBank={source.total_income_by_bank || {}}
              total_income_by_channel={source.total_income_by_channel || {}} />
-            <OverAll overall={source.overall || {}} byCurrency={source.by_currency || []} />
+            <OverAll overall={source.overall || {}}
+             byCurrency={source.by_currency || []}  />
 
 
          </div>

@@ -33,6 +33,11 @@ const sendTransaction = async (formdata:any,token:string) => {
     });
 };
 
+let bank_data = ['none', 'access', 'gtb','zenith','uba','firstbank',
+                'fidelity','polaris','wema','sterling','kuda','opay',
+                'paycom','ecobank','fcmb','providus','jaiz','suntrust',
+                'albaraka','citibank','standard chartered']
+
 
 
 export default function TransactionForm ({transactionFormState, setTransactionFormState}: {transactionFormState: any, setTransactionFormState: React.Dispatch<React.SetStateAction<any>>}){
@@ -49,7 +54,7 @@ const getOptions = (list:any[],type:string) =>{
 
   interface SelectOption { value: string; label: string }
   let result: SelectOption[] = []
-  if(type=="currency"){
+  if(type=="currency" || type == 'bank'){
     list.forEach((data)=>{
       result.push({value:data,label:data})
     })
@@ -73,6 +78,7 @@ const customerOptions = getOptions(customers,'customers')
 const channelOptions = [{value:'transfer',label:'transfer'},
                         {value:'cash',label:'cash'},
 ]
+const banks = getOptions(bank_data,'bank')
 
 const [fileData,setFile] = useState<File|"">()
 
@@ -153,8 +159,8 @@ const handleFile = (e: ChangeEvent<HTMLInputElement>)=>{
         if (res.data.transaction) {
             dispatch(addSingleExchange(res.data.transaction));
             setTransactionFormState({ id:"",base_currency: 'RMB', amount: 0.0,
-                             usd_rate: 17.0, usd_price: 16.8, naira_rate: 212.12,
-                             paid_amount:0.0,channel:'transfer',
+                             usd_rate: 7.0, naira_rate_cp: 214.8, naira_rate_sp: 214.9,
+                             paid_amount:0.0,channel:'transfer', bank:'none',
                              payee: '',customer:"" ,reciept:""});
             dispatch(addAlert({status:200,message:`Transaction ${action}`,page:'transactionForm'}))                 
               setIsLoading(false)
@@ -190,13 +196,13 @@ const handleFile = (e: ChangeEvent<HTMLInputElement>)=>{
       <input style={formStyles.input} name='usd_rate' type='number' step='0.1'  placeholder='0.0'
        required  value={transactionFormState.usd_rate} onChange={TransactionOnChange}/>
 
-      <label htmlFor="usd_price">USD Price</label>
-      <input style={formStyles.input} name='usd_price' type='number'  step='0.1' placeholder='0.0' 
-      required  value={transactionFormState.usd_price} onChange={TransactionOnChange}/>
+      <label htmlFor="naira_rate_cp">Naira Rate CP</label>
+      <input style={formStyles.input} name='naira_rate_cp' type='number'  step='0.1' placeholder='0.0' 
+      required  value={transactionFormState.naira_rate_cp} onChange={TransactionOnChange}/>
 
-      <label htmlFor="naira_rate">Naira Rate</label>
-      <input style={formStyles.input} name='naira_rate' type='number' step='0.1'  placeholder='0.0'
-       required  value={transactionFormState.naira_rate} onChange={TransactionOnChange} />
+      <label htmlFor="naira_rate_sp">Naira Rate SP</label>
+      <input style={formStyles.input} name='naira_rate_sp' type='number' step='0.1'  placeholder='0.0'
+       required  value={transactionFormState.naira_rate_sp} onChange={TransactionOnChange} />
 
        
        <label htmlFor="paid_amount">Paid Amount in Naira</label>
@@ -215,6 +221,18 @@ const handleFile = (e: ChangeEvent<HTMLInputElement>)=>{
        isSearchable
        name="channel"
        placeholder="Select channel"
+      className="select"
+       required
+      /> 
+
+      <label htmlFor="bank">Bank</label>
+      <Select
+      options={banks}
+      value={banks.find(b => b.value === transactionFormState.bank) || null}
+       onChange={(option:any) => selectChange(option,'bank')}
+       isSearchable
+       name="bank"
+       placeholder="Select bank"
       className="select"
        required
       /> 

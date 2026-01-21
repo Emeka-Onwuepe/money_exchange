@@ -4,6 +4,7 @@ import formStyles from "../../styles/forms";
 interface Income {
   base_currency: string;
   channel: string;
+  bank: string;
   date: string;
   full_name: string;
   nature: string;
@@ -12,9 +13,12 @@ interface Income {
   transactionId: string;
   transaction_amount: number;
 }
+interface byBank {
+    [key: string]:number;
+}
 
-export default function Incomes({ income,total_income,total_income_by_channel }: 
-    { income: Income[], total_income:number, total_income_by_channel: { [key: string]: number }}) {
+export default function Incomes({ income,total_income,total_income_by_channel,byBank }: 
+    { income: Income[], total_income:number, total_income_by_channel: { [key: string]: number }, byBank: byBank }) {
   return (
     <div style={formStyles.sectionCard}>
         <h3 style={formStyles.sectionTitle}>Incomes</h3>
@@ -29,6 +33,7 @@ export default function Incomes({ income,total_income,total_income_by_channel }:
                     <th style={formStyles.th}>Base Currency</th>
                     <th style={formStyles.th}>Transaction Amount</th>
                     <th style={formStyles.th}>Channel</th>
+                    <th style={formStyles.th}>Bank</th>
                     <th style={formStyles.th}>Nature</th>
                 </tr>
             </thead>
@@ -43,6 +48,7 @@ export default function Incomes({ income,total_income,total_income_by_channel }:
                         <td style={formStyles.td}>{item.base_currency}</td>
                         <td style={formStyles.td}>{addCommas(item.transaction_amount)}</td>
                         <td style={formStyles.td}>{item.channel}</td>
+                        <td style={formStyles.td}>{item.bank}</td>
                         <td style={formStyles.td}>{item.nature}</td>
                     </tr>
                 ))}
@@ -61,6 +67,35 @@ export default function Incomes({ income,total_income,total_income_by_channel }:
                     <td style={formStyles.td} colSpan={6}><strong>{addCommas(total_income)}</strong></td>
                     <td style={formStyles.td} ></td>
                 </tr>
+                <tr>
+                    <td><br/></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td style={formStyles.td} colSpan={10}><strong>Income By Banks</strong></td>
+                </tr>
+                <tr>
+                    <td><strong  style={{color:'black'}}>Bank</strong></td>
+                    <td><strong  style={{color:'black'}}>Amount</strong></td>
+                </tr>
+                 {Object.entries(byBank).map(([bank, value]) => (
+                        <tr key={bank}>
+                            {bank=='total_amount' ? 
+                            <>
+                            <td style={formStyles.td}><strong>Total</strong></td> 
+                            <td style={formStyles.td}><strong>{addCommas(value.toFixed(2))}</strong></td>
+                            </>
+                            :
+                            <>
+                            <td style={formStyles.td}>{bank}</td>
+                            <td style={formStyles.td}>{addCommas(value.toFixed(2))}</td>
+                            </>
+                            }
+                        </tr>
+                    ))}
             </tfoot>
         </table>
 

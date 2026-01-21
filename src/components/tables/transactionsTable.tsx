@@ -61,20 +61,22 @@ useEffect(()=>{
                             <thead>
                                 <tr>
                 <th style={formStyles.th} >Date</th>
-                <th style={formStyles.th}>Transaction ID</th>
+                <th style={formStyles.th}>Name</th>
                 <th style={formStyles.th}>Base</th>
                 <th style={formStyles.th}>Amount</th>
-                <th style={formStyles.th}>USD <br/> Price</th>
                 <th style={formStyles.th}>USD <br/> Rate</th>
-                <th style={formStyles.th}>USD <br/> Ask</th>
-                <th style={formStyles.th}>USD <br/> Bid</th>
-                <th style={formStyles.th}>USD <br/> Gain</th>
-                <th style={formStyles.th}>Naira <br/> Rate</th>
-                <th style={formStyles.th}>Naira</th>
+                <th style={formStyles.th}>Naira<br/> Rate (CP)</th>
+                <th style={formStyles.th}>Naira <br/> Rate (SP)</th>
+                <th style={formStyles.th}>Naira <br/> CP</th>
+                <th style={formStyles.th}>Naira <br/> SP</th>
+                <th style={formStyles.th}>Naira <br/> Gain </th>
                 <th style={formStyles.th}>Paid <br/> Amount</th>
                 <th style={formStyles.th}>Balance</th>
-                <th style={formStyles.th}>Name</th>
                 <th style={formStyles.th}>Payee</th>
+                <th style={formStyles.th}>Transaction ID</th>
+                <th style={formStyles.th}>Channel</th>
+                <th style={formStyles.th}>Bank</th>
+
 
 
                                 </tr>
@@ -84,20 +86,23 @@ useEffect(()=>{
              transaction.amount ? (
             <tr key={index} style={{ background: index % 2 ? "#ffffff" : "#fbfdff" }}>
             <td style={formStyles.td}>{transaction.date}</td>  
-            <td style={formStyles.td}>{transaction.transaction_id}</td>  
+            <td style={formStyles.td}>{transaction.customer.full_name}</td>
             <td style={formStyles.td}>{transaction.base_currency}</td>
             <td style={formStyles.td}>{addCommas(transaction.amount.toFixed(2))}</td>
-            <td style={formStyles.td}>{addCommas(transaction.usd_price)}</td>
             <td style={formStyles.td}>{addCommas(transaction.usd_rate)}</td>
-            <td style={formStyles.td}>{addCommas(transaction.usd_bid.toFixed(1))}</td>
-            <td style={formStyles.td}>{addCommas(transaction.usd_ask.toFixed(1))}</td>
-             <td style={formStyles.td}>{addCommas(transaction.usd_gain.toFixed(1))}</td>
-            <td style={formStyles.td}>{addCommas(transaction.naira_rate)}</td>
-            <td style={formStyles.td}>{addCommas(transaction.naira.toFixed(1))}</td>
+            <td style={formStyles.td}>{addCommas(transaction.naira_rate_cp.toFixed(1))}</td>
+            <td style={formStyles.td}>{addCommas(transaction.naira_rate_sp.toFixed(1))}</td>
+             <td style={formStyles.td}>{addCommas(transaction.naira_cp.toFixed(1))}</td>
+            <td style={formStyles.td}>{addCommas(transaction.naira_sp.toFixed(1))}</td>
+            <td style={formStyles.td}>{addCommas(transaction.naira_gain.toFixed(1))}</td>
             <td style={formStyles.td}>{addCommas(transaction.paid_amount.toFixed(1))}</td>
             <td style={formStyles.td}>{addCommas(transaction.balance.toFixed(1))}</td>
-            <td style={formStyles.td}>{transaction.customer.full_name}</td>
             <td style={formStyles.td}>{transaction.payee.name}</td>
+            <td style={formStyles.td}>{transaction.transaction_id}</td>  
+            <td style={formStyles.td}>{transaction.channel}</td>
+            <td style={formStyles.td}>{transaction.bank}</td>
+
+
             </tr>) : null
                 ) )}
             <tr>

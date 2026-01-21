@@ -33,7 +33,8 @@ const dispatch = useAppDispatch()
 
     }
   },[user])
-const [paymentForm, setPaymentForm] = useState({ id: "", amount: 0, channel:'transfer',
+const [paymentForm, setPaymentForm] = useState({ id: "", amount: 0,bank:'none',
+                                                   channel:'transfer',
                                                  transaction: parseInt(id) });
 
 const [paymentSum, setPaymentSum] = useState({ payments: 0, total: 0})
@@ -84,32 +85,36 @@ setPaymentSum({payments:sum,total:sum+transaction.paid_amount})
 
                 <p ><strong>Base:</strong><span>  {transaction.base_currency}</span></p>
                 <p ><strong>Amount:</strong><span>  {addCommas(transaction.amount)}</span></p>
-                <p ><strong>USD Price:</strong><span>  {addCommas(transaction.usd_price)}</span></p>
                 <p ><strong>USD Rate:</strong><span>  {addCommas(transaction.usd_rate)}</span></p>
-                <p ><strong>USD Ask:</strong><span>  {addCommas(transaction.usd_ask)}</span></p>
-                <p ><strong>USD Bid:</strong><span>  {addCommas(transaction.usd_bid)}</span></p>
-                <p ><strong>USD Gain:</strong><span>  {addCommas(transaction.usd_gain)}</span></p>
-                <p ><strong>Naira Rate:</strong><span>  {addCommas(transaction.naira_rate)}</span></p>
-                <p ><strong>Naira:</strong><span>  {addCommas(transaction.naira)}</span></p>
+                <p ><strong>Naira Rate (cp):</strong><span>  {addCommas(transaction.naira_rate_cp)}</span></p>
+                <p ><strong>Naira Rate (SP):</strong><span>  {addCommas(transaction.naira_rate_sp)}</span></p>
+                <p ><strong>Naira CP:</strong><span>  {addCommas(transaction.naira_cp)}</span></p>
+                <p ><strong>Naira SP:</strong><span>  {addCommas(transaction.naira_sp)}</span></p>
+                <p ><strong>Naira Gain :</strong><span>  {addCommas(transaction.naira_gain)}</span></p>
                 <p ><strong>Paid Amount:</strong><span>  {addCommas(transaction.paid_amount)}</span></p>
                 <p ><strong>Payments:</strong><span>  {addCommas(paymentSum.payments)}</span></p>
                 <p ><strong>Total Payments:</strong><span>  {addCommas(paymentSum.total)}</span></p>
-                <p ><strong>Balance:</strong><span>  {addCommas(paymentSum.total - transaction.naira)}</span></p>
+                <p ><strong>Balance:</strong><span>  {addCommas(paymentSum.total - transaction.naira_sp)}</span></p>
                 <p ><strong>Payee:</strong><span>  {payee.full_name}</span></p>
                 <p ><strong>Receipt:</strong><span>  {transaction.reciept?<a target="blank" href={transaction.reciept}>View</a>: "no reciept"}</span></p>
        </div>
     </div>
+    <div className="paymentSection" style={{display:'flex'}}>
+    <PaymentForm user = {user} setPayments={setPayments} paymentForm = {paymentForm} setpaymentForm = {setPaymentForm} transaction={parseInt(id)} />
+
     <div className="flex_container payment_flex">
-        <PaymentForm user = {user} setPayments={setPayments} paymentForm = {paymentForm} setpaymentForm = {setPaymentForm} transaction={parseInt(id)} />
         {payments && (payments.map((payment: any, index: number) => (
-            <div key={index} className="payments">
+            <div  key={index} className="payments">
                 <p>{payment.date}</p>
-                <p>{addCommas(payment.amount)}</p>
+                {payment.bank != 'none'?<p style={{textTransform:'capitalize'}}> {payment.bank} Bank</p>:null}
+                <p><strong>{addCommas(payment.amount)}</strong></p>
                 <button onClick={()=>setPaymentForm(payment)}>Edit</button>
             </div>)
-            ))}
-
+            ))
+}
     </div>
+        </div>
+
     </div>
   )
 }

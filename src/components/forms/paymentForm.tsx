@@ -12,6 +12,12 @@ interface PayeeInterface {
     [key:string]:string
 }[]
 
+let bank_data = ['none', 'access', 'gtb','zenith','uba','firstbank',
+                'fidelity','polaris','wema','sterling','kuda','opay',
+                'paycom','ecobank','fcmb','providus','jaiz','suntrust',
+                'albaraka','citibank','standard chartered']
+
+
 
 const PaymentForm = ({user,paymentForm, setPayments, setpaymentForm,transaction}:any) =>{
 
@@ -29,6 +35,8 @@ const PaymentForm = ({user,paymentForm, setPayments, setpaymentForm,transaction}
         const channelOptions = [{value:'transfer',label:'transfer'},
                         {value:'cash',label:'cash'},
             ]
+
+        const bank = bank_data.map(b=>{return {value:b,label:b}})
         
         const selectChange = (option:any,target:string) =>{
                          const newValue = option ? option.value : ''
@@ -71,7 +79,9 @@ const PaymentForm = ({user,paymentForm, setPayments, setpaymentForm,transaction}
 
                     // dispatch(addSinglePayment(res.data.payment));
 
-                    setpaymentForm({ id: "", amount: 0, transaction});
+                    setpaymentForm({ id: "", amount: 0,
+                                    channel:'transfer',
+                                    bank:'none', transaction});
                 }else if(res.error){
                     dispatch(addAlert({...res.error, page:'PaymentForm'}))
                                }
@@ -99,6 +109,20 @@ const PaymentForm = ({user,paymentForm, setPayments, setpaymentForm,transaction}
                                         id = 'select'
                                        required
                                 /> 
+
+                                <label htmlFor="channel">Bank</label>
+                                <Select
+                                      options={bank}
+                                      value={bank.find(c => c.value === paymentForm.bank) || null}
+                                       onChange={(option:any) => selectChange(option,'bank')}
+                                       isSearchable
+                                       name="bank"
+                                       placeholder="Select bank"
+                                        className="select"
+                                        id = 'select'
+                                       required
+                                /> 
+
                                 <button
                                 style={{ ...formStyles.submitBtn, 
                                                         ...(isLoading ? { backgroundColor: '#808080', cursor: 'not-allowed' } 
