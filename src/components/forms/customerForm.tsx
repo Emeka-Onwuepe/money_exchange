@@ -65,7 +65,7 @@ const CustomerForm = ({user,customerForm, setCustomerForm}:any) =>{
                             <h3 style={formStyles.formTitle}>Add / Edit Customer</h3>
                             <form style={formStyles.form} onSubmit={OnSubmitCustomer}>
                                 <input style={formStyles.input} type="text" placeholder="Full Name" name="full_name" value={customerForm.full_name} onChange={CustomerOnChange} required />
-                                <input style={formStyles.input} type="text" placeholder="Phone Number" name="phone_number" value={customerForm.phone_number} onChange={CustomerOnChange} required />
+                                <input style={formStyles.input} type="text" placeholder="Phone Number" name="phone_number" value={customerForm.phone_number} onChange={CustomerOnChange} />
                                 <input style={formStyles.input} type="email" placeholder="Email" name="email" value={customerForm.email} onChange={CustomerOnChange} />
                                 <button   style={{ ...formStyles.submitBtn, 
                                 ...(isLoading ? { backgroundColor: '#808080', cursor: 'not-allowed' } 
