@@ -86,6 +86,10 @@ const TransactionOnChange = (e: ChangeEvent<HTMLInputElement>) =>{
   if(e.target.name == 'amount'|| e.target.name == 'paid_amount'){
   	setTransactionFormState({ ...transactionFormState, [e.target.name]: removeCommas(e.target.value) })
 
+  }else if(e.target.name == 'naira_rate_sp'){
+      	setTransactionFormState({ ...transactionFormState, 
+          [e.target.name]: e.target.value, naira_rate_cp: (parseFloat(e.target.value) - 0.1).toFixed(1) })
+
   }else{
   	setTransactionFormState({ ...transactionFormState, [e.target.name]: e.target.value })
 
@@ -93,8 +97,15 @@ const TransactionOnChange = (e: ChangeEvent<HTMLInputElement>) =>{
 	}
 
 const selectChange = (option:any,target:string) =>{
-  const newValue = option ? option.value : ''
-  setTransactionFormState({...transactionFormState, [target]: newValue})
+    const newValue = option ? option.value : ''
+
+  if(target == 'base_currency' && newValue == 'USD'){
+      setTransactionFormState({...transactionFormState, [target]: newValue, usd_rate: 1})
+
+  }else{
+      setTransactionFormState({...transactionFormState, [target]: newValue})
+
+  }
 
 }
 
@@ -111,16 +122,15 @@ const handleFile = (e: ChangeEvent<HTMLInputElement>)=>{
 
 }
 
-// useEffect(()=>{
-// console.log('filedata',fileData)
-// console.log('transactionFormState',transactionFormState)
-// },[fileData,transactionFormState])
-
-
   const OnSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
     e.preventDefault()
     setIsLoading(true)
-    if(transactionFormState.amount  == 0 || !transactionFormState.amount) return
+  
+    if(transactionFormState.amount  == 0 || !transactionFormState.amount){
+      setIsLoading(false)
+      return
+    } 
+
 
     let form = new FormData();
     let formdData = transactionFormState
@@ -146,21 +156,18 @@ const handleFile = (e: ChangeEvent<HTMLInputElement>)=>{
             form.append(key, "");
           } else if (key == 'reciept'){
             form.append(key, fileData as Blob);
-          }else if(key == 'date'){
-            const new_date = new Date(String(value)).toLocaleDateString('en-CA');
-            form.append(key, new_date);
           }
           else {
             form.append(key, String(value));
           }
         }
-        
         const res = await sendTransaction(form,user.usertoken)
         if (res.data.transaction) {
             dispatch(addSingleExchange(res.data.transaction));
             setTransactionFormState({ id:"",base_currency: 'RMB', amount: 0.0,
                              usd_rate: 7.0, naira_rate_cp: 214.8, naira_rate_sp: 214.9,
                              paid_amount:0.0,channel:'transfer', bank:'none',
+                             date: new Date().toISOString().split('T')[0],
                              payee: '',customer:"" ,reciept:""});
             dispatch(addAlert({status:200,message:`Transaction ${action}`,page:'transactionForm'}))                 
               setIsLoading(false)
@@ -188,6 +195,11 @@ const handleFile = (e: ChangeEvent<HTMLInputElement>)=>{
        placeholder="Select currency"
        className="select"
       />
+
+      <label htmlFor="date">Date</label>
+      <input type="date" style={formStyles.input} value={transactionFormState.date} name="date" onChange={TransactionOnChange} required />
+            
+
       <label htmlFor="Amount">Amount</label>
       <input style={formStyles.input} type="text"  name="amount" placeholder='1,000'
        required value={addCommas(transactionFormState.amount)} onChange={TransactionOnChange} />

@@ -69,6 +69,7 @@ const [writeSate,SetWriteState] = useState(false)
 const [transactionFormState, setTransactionFormState] = useState({ id:"",base_currency: 'RMB', amount: 0.0,
                             usd_rate: 7.0, naira_rate_cp: 214.8, naira_rate_sp: 214.9,
                             paid_amount:0.0,channel:'transfer', bank:'none', reciept: "",
+                            date:new Date().toISOString().split('T')[0],
                              payee: '',customer:"" })
 
 
